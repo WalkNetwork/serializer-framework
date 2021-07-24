@@ -26,7 +26,7 @@ interface Observable {
  * All events that a serial file can made.
  */
 enum class ObserverKind {
-  LOAD, RELOAD, SAVE, SAVE_MODEL, CREATES
+  LOAD, RELOAD, SAVE, SAVE_MODEL, CREATE
 }
 
 /**

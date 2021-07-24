@@ -3,8 +3,11 @@ package com.github.uinnn.serializer
 import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyStringFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -17,12 +20,14 @@ import kotlin.reflect.full.createInstance
  * This also is lazy init.
  */
 val DefaultJsonFormat by lazy {
-  Json {
-    prettyPrint = true
-    prettyPrintIndent = "  "
-    encodeDefaults = true
-    serializersModule = FrameworkModule
-  }
+  AlterableJsonFormat(FrameworkModule,
+    Json {
+      prettyPrint = true
+      prettyPrintIndent = "  "
+      encodeDefaults = true
+      serializersModule = FrameworkModule
+    }
+  )
 }
 
 /**
@@ -35,11 +40,13 @@ val DefaultJsonFormat by lazy {
  * database or in file. Not use this to settings.
  */
 val DefaultJsonSaveFormat by lazy {
-  Json {
-    encodeDefaults = true
-    allowStructuredMapKeys = true
-    serializersModule = FrameworkModule
-  }
+  AlterableJsonFormat(FrameworkModule,
+    Json {
+      encodeDefaults = true
+      allowStructuredMapKeys = true
+      serializersModule = FrameworkModule
+    }
+  )
 }
 
 /**
@@ -64,6 +71,23 @@ val DefaultJsonStrategyFormat by lazy {
  */
 val DefaultJsonStrategySaveFormat by lazy {
   StrategyStringFormatter(DefaultJsonSaveFormat, ColorStrategy, ColorStrategy)
+}
+
+/**
+ * This class is equals to [Json] + [AlterableStringFormat].
+ * Is only for type-safe use with alterable modules.
+ */
+class AlterableJsonFormat(
+  override var serializersModule: SerializersModule,
+  val model: Json
+) : AlterableStringFormat {
+  override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
+    return model.decodeFromString(deserializer, string)
+  }
+
+  override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
+    return model.encodeToString(serializer, value)
+  }
 }
 
 /**

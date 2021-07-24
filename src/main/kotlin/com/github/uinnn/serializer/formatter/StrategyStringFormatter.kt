@@ -7,14 +7,13 @@ import com.github.uinnn.serializer.strategy.DefaultSerialEncoder
 import com.github.uinnn.serializer.strategy.EncoderStrategy
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.StringFormat
 import kotlinx.serialization.modules.SerializersModule
 
-class StrategyStringFormatter(
-  override val model: StringFormat,
+open class StrategyStringFormatter(
+  override val model: AlterableStringFormat,
   encoder: EncoderStrategy,
   decoder: DecoderStrategy,
-) : StrategyFormatter(model, encoder, decoder), AlterableStringFormat by model as AlterableStringFormat {
+) : StrategyFormatter(model, encoder, decoder), AlterableStringFormat by model {
   override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
     return model.encodeToString(DefaultSerialEncoder(encoder, serializer), value)
   }

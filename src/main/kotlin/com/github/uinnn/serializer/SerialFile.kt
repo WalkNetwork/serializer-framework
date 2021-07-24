@@ -75,7 +75,7 @@ interface SerialFile<T : Any> : Observable {
     if (!file.exists()) {
       file.parentFile.mkdirs()
       file.createNewFile()
-      observe(ObserverKind.CREATES)
+      observe(ObserverKind.CREATE)
       if (savesModel) saveModel()
     }
   }

@@ -3,7 +3,10 @@ package com.github.uinnn.serializer
 import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyBinaryFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
@@ -17,10 +20,12 @@ import kotlin.reflect.full.createInstance
  * This also is lazy init.
  */
 val DefaultProtocolBufferFormat by lazy {
-  ProtoBuf {
-    encodeDefaults = true
-    serializersModule = FrameworkModule
-  }
+  AlterableProtocolBufferFormat(FrameworkModule,
+    ProtoBuf {
+      encodeDefaults = true
+      serializersModule = FrameworkModule
+    }
+  )
 }
 
 /**
@@ -31,6 +36,23 @@ val DefaultProtocolBufferFormat by lazy {
  */
 val DefaultProtocolBufferStrategyFormat by lazy {
   StrategyBinaryFormatter(DefaultProtocolBufferFormat, ColorStrategy, ColorStrategy)
+}
+
+/**
+ * This class is equals to [ProtoBuf] + [AlterableBinaryFormat].
+ * Is only for type-safe use with alterable modules.
+ */
+class AlterableProtocolBufferFormat(
+  override var serializersModule: SerializersModule,
+  val model: ProtoBuf
+) : AlterableBinaryFormat {
+  override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T {
+    return model.decodeFromByteArray(deserializer, bytes)
+  }
+
+  override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
+    return model.encodeToByteArray(serializer, value)
+  }
 }
 
 /**

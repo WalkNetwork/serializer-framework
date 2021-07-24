@@ -75,3 +75,33 @@ fun YamlFile<*>.defaultFormat() = apply {
 fun ProtocolBufferFile<*>.defaultFormat() = apply {
   format = DefaultProtocolBufferStrategyFormat
 }
+
+/**
+ * Shortcut for adding a observer event
+ * handler for saving a serial file.
+ */
+fun Observable.onSave(action: ObserverAction) = onObserve(ObserverKind.SAVE, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for loading a serial file.
+ */
+fun Observable.onLoad(action: ObserverAction) = onObserve(ObserverKind.LOAD, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for reloading a serial file.
+ */
+fun Observable.onReload(action: ObserverAction) = onObserve(ObserverKind.RELOAD, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for saving model of a serial file.
+ */
+fun Observable.onSaveModel(action: ObserverAction) = onObserve(ObserverKind.SAVE_MODEL, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for creating a serial file.
+ */
+fun Observable.onCreate(action: ObserverAction) = onObserve(ObserverKind.CREATE, action)

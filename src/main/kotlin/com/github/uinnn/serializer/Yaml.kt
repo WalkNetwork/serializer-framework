@@ -6,7 +6,10 @@ import com.charleskorn.kaml.YamlConfiguration
 import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyStringFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -20,7 +23,10 @@ import kotlin.reflect.full.createInstance
  * This also is lazy init.
  */
 val DefaultYamlFormat by lazy {
-  Yaml(FrameworkModule, YamlConfiguration(polymorphismStyle = PolymorphismStyle.Property))
+  AlterableYamlFormat(
+    FrameworkModule,
+    Yaml(FrameworkModule, YamlConfiguration(polymorphismStyle = PolymorphismStyle.Property))
+  )
 }
 
 /**
@@ -32,6 +38,23 @@ val DefaultYamlFormat by lazy {
  */
 val DefaultYamlStrategyFormat by lazy {
   StrategyStringFormatter(DefaultYamlFormat, ColorStrategy, ColorStrategy)
+}
+
+/**
+ * This class is equals to [Yaml] + [AlterableStringFormat].
+ * Is only for type-safe use with alterable modules.
+ */
+class AlterableYamlFormat(
+  override var serializersModule: SerializersModule,
+  val model: Yaml
+) : AlterableStringFormat {
+  override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
+    return model.decodeFromString(deserializer, string)
+  }
+
+  override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
+    return model.encodeToString(serializer, value)
+  }
 }
 
 /**
