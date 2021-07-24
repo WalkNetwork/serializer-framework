@@ -1,8 +1,6 @@
 package com.github.uinnn.serializer.serial
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
@@ -10,10 +8,6 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.material.MaterialData
-import org.bukkit.util.io.BukkitObjectInputStream
-import org.bukkit.util.io.BukkitObjectOutputStream
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 object ItemSerializer : KSerializer<ItemStack> {
   override val descriptor = buildClassSerialDescriptor("ItemStack") {
@@ -64,28 +58,6 @@ object ItemSerializer : KSerializer<ItemStack> {
     encodeBooleanElement(descriptor, 4, false)
     encodeSerializableElement(descriptor, 2, StringListSerializer, value.itemMeta.lore)
     if (value.enchantments.isNotEmpty())
-     encodeSerializableElement(descriptor, 5, EnchantmentSerializer, value.enchantments)
+      encodeSerializableElement(descriptor, 5, EnchantmentSerializer, value.enchantments)
   }
 }
-
-
-object BinaryItemSerializer : KSerializer<ItemStack> {
-  override val descriptor = PrimitiveSerialDescriptor("BinaryItemStack", PrimitiveKind.STRING)
-
-  override fun deserialize(decoder: Decoder): ItemStack {
-    val input = BukkitObjectInputStream(ByteArrayInputStream(decoder.decodeString().toByteArray()))
-    val item = input.readObject() as ItemStack
-    input.close()
-    return item
-  }
-
-  override fun serialize(encoder: Encoder, value: ItemStack) {
-    val output = BukkitObjectOutputStream(ByteArrayOutputStream())
-    output.writeObject(value)
-    encoder.encodeString(output.toString())
-    output.close()
-  }
-}
-
-
-
