@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "com.github.uinnn"
-version = "0.1.0"
+version = "1.2"
 
 repositories {
   mavenCentral()
@@ -31,9 +31,6 @@ dependencies {
   pdm("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2", excludeKotlin)
   pdm("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2", excludeKotlin)
   pdm("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.2.2", excludeKotlin)
-  pdm("com.akuleshov7:ktoml-core:0.2.6")
-  pdm("io.github.pdvrieze.xmlutil:serialization-jvm:0.82.0")
-  pdm("io.github.pdvrieze.xmlutil:core-jvm:0.82.0", excludeKotlin)
   pdm("com.charleskorn.kaml:kaml:0.34.0")
 }
 

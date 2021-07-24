@@ -7,7 +7,6 @@ import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyStringFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.StringFormat
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -41,12 +40,13 @@ val DefaultYamlStrategyFormat by lazy {
  * Also loads the file when constructs a new instance of this class.
  */
 class YamlFile<T : Any>(
-  override val file: File,
+  override var file: File,
   override var model: T,
-  override val serial: KSerializer<T>,
-  override val format: StringFormat = DefaultYamlStrategyFormat
+  override var serial: KSerializer<T>,
+  override var format: AlterableStringFormat = DefaultYamlStrategyFormat
 ) : StringSerialFile<T> {
   override var settings: T = model
+  override var observers: Observers = Observers()
 
   init {
     load()
@@ -64,7 +64,7 @@ fun <T : Any> yaml(
   file: File,
   model: T,
   serial: KSerializer<T>,
-  format: StringFormat = DefaultYamlStrategyFormat
+  format: AlterableStringFormat = DefaultYamlStrategyFormat
 ) = YamlFile(file, model, serial, format)
 
 /**
@@ -80,7 +80,7 @@ fun <T : Any> Plugin.yaml(
   file: String,
   model: T,
   serial: KSerializer<T>,
-  format: StringFormat = DefaultYamlStrategyFormat
+  format: AlterableStringFormat = DefaultYamlStrategyFormat
 ) = YamlFile(File(dataFolder, "$file.yaml"), model, serial, format)
 
 /**
@@ -110,7 +110,7 @@ fun <T : Any> Plugin.yaml(
 fun <T : Any> yaml(
   file: File,
   model: KClass<T>,
-  format: StringFormat = DefaultYamlStrategyFormat
+  format: AlterableStringFormat = DefaultYamlStrategyFormat
 ) = YamlFile(file, model.createInstance(), model.serializer(), format)
 
 /**
@@ -143,5 +143,5 @@ fun <T : Any> yaml(
 fun <T : Any> Plugin.yaml(
   file: String,
   model: KClass<T>,
-  format: StringFormat = DefaultYamlStrategyFormat
+  format: AlterableStringFormat = DefaultYamlStrategyFormat
 ) = YamlFile(File(dataFolder, "$file.yaml"), model.createInstance(), model.serializer(), format)

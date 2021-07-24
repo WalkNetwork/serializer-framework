@@ -3,7 +3,6 @@ package com.github.uinnn.serializer
 import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyBinaryFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
-import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.serializer
@@ -40,12 +39,13 @@ val DefaultProtocolBufferStrategyFormat by lazy {
  * Also loads the file when constructs a new instance of this class.
  */
 class ProtocolBufferFile<T : Any>(
-  override val file: File,
+  override var file: File,
   override var model: T,
-  override val serial: KSerializer<T>,
-  override val format: BinaryFormat = DefaultProtocolBufferStrategyFormat
+  override var serial: KSerializer<T>,
+  override var format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) : BinarySerialFile<T> {
   override var settings = model
+  override var observers: Observers = Observers()
 
   init {
     load()
@@ -63,7 +63,7 @@ fun <T : Any> protobuf(
   file: File,
   model: T,
   serial: KSerializer<T>,
-  format: BinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(file, model, serial, format)
 
 /**
@@ -79,7 +79,7 @@ fun <T : Any> Plugin.protobuf(
   file: String,
   model: T,
   serial: KSerializer<T>,
-  format: BinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(File(dataFolder, "$file.proto"), model, serial, format)
 
 /**
@@ -109,7 +109,7 @@ fun <T : Any> Plugin.protobuf(
 fun <T : Any> protobuf(
   file: File,
   model: KClass<T>,
-  format: BinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(file, model.createInstance(), model.serializer(), format)
 
 /**
@@ -142,5 +142,5 @@ fun <T : Any> protobuf(
 fun <T : Any> Plugin.protobuf(
   file: String,
   model: KClass<T>,
-  format: BinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(File(dataFolder, "$file.proto"), model.createInstance(), model.serializer(), format)

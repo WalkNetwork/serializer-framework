@@ -1,5 +1,6 @@
 package com.github.uinnn.serializer.formatter
 
+import com.github.uinnn.serializer.AlterableStringFormat
 import com.github.uinnn.serializer.strategy.DecoderStrategy
 import com.github.uinnn.serializer.strategy.DefaultSerialDecoder
 import com.github.uinnn.serializer.strategy.DefaultSerialEncoder
@@ -13,7 +14,7 @@ class StrategyStringFormatter(
   override val model: StringFormat,
   encoder: EncoderStrategy,
   decoder: DecoderStrategy,
-) : StrategyFormatter(model, encoder, decoder), StringFormat by model {
+) : StrategyFormatter(model, encoder, decoder), AlterableStringFormat by model as AlterableStringFormat {
   override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
     return model.encodeToString(DefaultSerialEncoder(encoder, serializer), value)
   }
@@ -22,6 +23,5 @@ class StrategyStringFormatter(
     return model.decodeFromString(DefaultSerialDecoder(decoder, deserializer), string)
   }
 
-  override val serializersModule: SerializersModule
-    get() = model.serializersModule
+  override var serializersModule: SerializersModule = super.serializersModule
 }

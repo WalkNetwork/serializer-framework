@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.material.MaterialData
 
-object ItemSerializer : KSerializer<ItemStack> {
+object ItemStackSerializer : KSerializer<ItemStack> {
   override val descriptor = buildClassSerialDescriptor("ItemStack") {
     element<String>("name")
     element("material", MaterialDataSerializer.descriptor)

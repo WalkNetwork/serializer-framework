@@ -1,16 +1,15 @@
 package com.github.uinnn.serializer
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialFormat
 import java.io.File
 
-interface SerialFile<T : Any> {
+interface SerialFile<T : Any> : Observable {
 
   /**
    * The file object of
    * this serial file.
    */
-  val file: File
+  var file: File
 
   /**
    * A model initializer instance of
@@ -29,46 +28,61 @@ interface SerialFile<T : Any> {
    * A serial instance of
    * this serial file.
    */
-  val serial: KSerializer<T>
+  var serial: KSerializer<T>
 
   /**
    * The format that this
    * serial file will be
    * encode/decode.
    */
-  val format: SerialFormat
+  val format: AlterableSerialFormat
 
   /**
    * Loads for the first time
    * this serial file.
    */
-  fun load()
+  fun load() {
+    observe(ObserverKind.LOAD)
+  }
 
   /**
    * Reloads the current file
    * and updates the [settings] property.
    */
-  fun reload()
+  fun reload() {
+    observe(ObserverKind.RELOAD)
+  }
 
   /**
    * Saves the model of this
    * serial file.
    */
-  fun saveModel()
+  fun saveModel() {
+    observe(ObserverKind.SAVE_MODEL)
+  }
 
   /**
    * Saves the [settings] to the file.
    */
-  fun save()
+  fun save() {
+    observe(ObserverKind.SAVE)
+  }
 
   /**
    * Creates the file if not exists.
    */
-  fun createFile() {
+  fun createFile(savesModel: Boolean = true) {
     if (!file.exists()) {
       file.parentFile.mkdirs()
       file.createNewFile()
-      saveModel()
+      observe(ObserverKind.CREATES)
+      if (savesModel) saveModel()
+    }
+  }
+
+  override fun observe(kind: ObserverKind) {
+    observers[kind]?.forEach { action ->
+      action(this)
     }
   }
 }

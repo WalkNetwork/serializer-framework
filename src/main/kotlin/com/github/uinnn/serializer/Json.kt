@@ -4,7 +4,6 @@ import com.github.uinnn.serializer.common.FrameworkModule
 import com.github.uinnn.serializer.formatter.StrategyStringFormatter
 import com.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.StringFormat
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
@@ -73,12 +72,13 @@ val DefaultJsonStrategySaveFormat by lazy {
  * Also loads the file when constructs a new instance of this class.
  */
 class JsonFile<T : Any>(
-  override val file: File,
+  override var file: File,
   override var model: T,
-  override val serial: KSerializer<T>,
-  override val format: StringFormat = DefaultJsonStrategyFormat
+  override var serial: KSerializer<T>,
+  override var format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) : StringSerialFile<T> {
   override var settings: T = model
+  override var observers: Observers = Observers()
 
   init {
     load()
@@ -96,7 +96,7 @@ fun <T : Any> json(
   file: File,
   model: T,
   serial: KSerializer<T>,
-  format: StringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(file, model, serial, format)
 
 /**
@@ -112,7 +112,7 @@ fun <T : Any> Plugin.json(
   file: String,
   model: T,
   serial: KSerializer<T>,
-  format: StringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
 
 /**
@@ -142,7 +142,7 @@ fun <T : Any> Plugin.json(
 fun <T : Any> json(
   file: File,
   model: KClass<T>,
-  format: StringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(file, model.createInstance(), model.serializer(), format)
 
 /**
@@ -175,5 +175,5 @@ fun <T : Any> json(
 fun <T : Any> Plugin.json(
   file: String,
   model: KClass<T>,
-  format: StringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(File(dataFolder, "$file.json"), model.createInstance(), model.serializer(), format)

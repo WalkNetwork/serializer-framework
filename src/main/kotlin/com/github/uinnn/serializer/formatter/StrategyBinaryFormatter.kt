@@ -1,5 +1,6 @@
 package com.github.uinnn.serializer.formatter
 
+import com.github.uinnn.serializer.AlterableBinaryFormat
 import com.github.uinnn.serializer.strategy.DecoderStrategy
 import com.github.uinnn.serializer.strategy.DefaultSerialDecoder
 import com.github.uinnn.serializer.strategy.DefaultSerialEncoder
@@ -13,7 +14,7 @@ class StrategyBinaryFormatter(
   override val model: BinaryFormat,
   encoder: EncoderStrategy,
   decoder: DecoderStrategy,
-) : StrategyFormatter(model, encoder, decoder), BinaryFormat by model {
+) : StrategyFormatter(model, encoder, decoder), AlterableBinaryFormat by model as AlterableBinaryFormat {
   override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
     return model.encodeToByteArray(DefaultSerialEncoder(encoder, serializer), value)
   }
@@ -22,6 +23,5 @@ class StrategyBinaryFormatter(
     return model.decodeFromByteArray(DefaultSerialDecoder(decoder, deserializer), bytes)
   }
 
-  override val serializersModule: SerializersModule
-    get() = model.serializersModule
+  override var serializersModule: SerializersModule = super.serializersModule
 }
