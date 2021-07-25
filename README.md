@@ -37,7 +37,7 @@ Now let's suppose you want to transfer the class to a YAML file:
 ```kotlin
 val configYaml by lazy { yaml(file, Settings::class) }
 val configJson by lazy { json(file, Settings::class) }
-val configProtoBuf by lazy { protobuuf(file, Settings::class) }
+val configProtoBuf by lazy { protobuf(file, Settings::class) }
 
 // with plugin (adds in the datafolder of the plugin)
 val configYamlPlugin by lazy { plugin.yaml("settings" /* already add a .yaml extension */, Settings::class) }
