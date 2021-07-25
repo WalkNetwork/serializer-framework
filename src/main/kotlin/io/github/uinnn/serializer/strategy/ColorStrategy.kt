@@ -24,3 +24,13 @@ object ColorStrategy : Strategy {
   override fun decodeString(descriptor: SerialDescriptor, index: Int, value: String) =
     value.replace('&', '§')
 }
+
+object ReverseBooleanStrategy : EncoderStrategy, DecoderStrategy {
+  override fun encodeBoolean(descriptor: SerialDescriptor, index: Int, value: Boolean): Boolean {
+    return value.not()
+  }
+
+  override fun decodeBoolean(descriptor: SerialDescriptor, index: Int, value: Boolean): Boolean {
+    return value.not()
+  }
+}

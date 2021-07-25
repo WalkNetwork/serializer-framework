@@ -3,11 +3,8 @@ package io.github.uinnn.serializer
 import io.github.uinnn.serializer.common.FrameworkModule
 import io.github.uinnn.serializer.formatter.StrategyStringFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -20,7 +17,7 @@ import kotlin.reflect.full.createInstance
  * This also is lazy init.
  */
 val DefaultJsonFormat by lazy {
-  AlterableJsonFormat(FrameworkModule,
+  Alterables.string(FrameworkModule,
     Json {
       prettyPrint = true
       prettyPrintIndent = "  "
@@ -40,7 +37,7 @@ val DefaultJsonFormat by lazy {
  * database or in file. Not use this to settings.
  */
 val DefaultJsonSaveFormat by lazy {
-  AlterableJsonFormat(FrameworkModule,
+  Alterables.string(FrameworkModule,
     Json {
       encodeDefaults = true
       allowStructuredMapKeys = true
@@ -74,23 +71,6 @@ val DefaultJsonStrategySaveFormat by lazy {
 }
 
 /**
- * This class is equals to [Json] + [AlterableStringFormat].
- * Is only for type-safe use with alterable modules.
- */
-class AlterableJsonFormat(
-  override var serializersModule: SerializersModule,
-  val model: Json
-) : io.github.uinnn.serializer.AlterableStringFormat {
-  override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-    return model.decodeFromString(deserializer, string)
-  }
-
-  override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
-    return model.encodeToString(serializer, value)
-  }
-}
-
-/**
  * The serial file for coding with JSON files.
  * By default [format] is [DefaultJsonStrategyFormat].
  * Also loads the file when constructs a new instance of this class.
@@ -99,7 +79,7 @@ class JsonFile<T : Any>(
   override var file: File,
   override var model: T,
   override var serial: KSerializer<T>,
-  override var format: io.github.uinnn.serializer.AlterableStringFormat = DefaultJsonStrategyFormat
+  override var format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) : StringSerialFile<T> {
   override var settings: T = model
   override var observers: Observers = Observers()
@@ -120,7 +100,7 @@ fun <T : Any> json(
   file: File,
   model: T,
   serial: KSerializer<T>,
-  format: io.github.uinnn.serializer.AlterableStringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(file, model, serial, format)
 
 /**
@@ -136,7 +116,7 @@ fun <T : Any> Plugin.json(
   file: String,
   model: T,
   serial: KSerializer<T>,
-  format: io.github.uinnn.serializer.AlterableStringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
 
 /**
@@ -166,7 +146,7 @@ fun <T : Any> Plugin.json(
 fun <T : Any> json(
   file: File,
   model: KClass<T>,
-  format: io.github.uinnn.serializer.AlterableStringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(file, model.createInstance(), model.serializer(), format)
 
 /**
@@ -199,5 +179,5 @@ fun <T : Any> json(
 fun <T : Any> Plugin.json(
   file: String,
   model: KClass<T>,
-  format: io.github.uinnn.serializer.AlterableStringFormat = DefaultJsonStrategyFormat
+  format: AlterableStringFormat = DefaultJsonStrategyFormat
 ) = JsonFile(File(dataFolder, "$file.json"), model.createInstance(), model.serializer(), format)

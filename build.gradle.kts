@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.uinnn"
-version = "1.3"
+version = "1.4"
 
 repositories {
   mavenCentral()
@@ -103,6 +103,5 @@ tasks {
     archiveName = "${project.name}.jar"
     baseName = project.name
     version = project.version.toString()
-    dependsOn(java)
   }
 }

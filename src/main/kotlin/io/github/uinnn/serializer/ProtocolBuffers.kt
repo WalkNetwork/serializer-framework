@@ -3,10 +3,7 @@ package io.github.uinnn.serializer
 import io.github.uinnn.serializer.common.FrameworkModule
 import io.github.uinnn.serializer.formatter.StrategyBinaryFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.serializer
 import org.bukkit.plugin.Plugin
@@ -20,7 +17,7 @@ import kotlin.reflect.full.createInstance
  * This also is lazy init.
  */
 val DefaultProtocolBufferFormat by lazy {
-  AlterableProtocolBufferFormat(FrameworkModule,
+  Alterables.binary(FrameworkModule,
     ProtoBuf {
       encodeDefaults = true
       serializersModule = FrameworkModule
@@ -39,23 +36,6 @@ val DefaultProtocolBufferStrategyFormat by lazy {
 }
 
 /**
- * This class is equals to [ProtoBuf] + [AlterableBinaryFormat].
- * Is only for type-safe use with alterable modules.
- */
-class AlterableProtocolBufferFormat(
-  override var serializersModule: SerializersModule,
-  val model: ProtoBuf
-) : io.github.uinnn.serializer.AlterableBinaryFormat {
-  override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T {
-    return model.decodeFromByteArray(deserializer, bytes)
-  }
-
-  override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
-    return model.encodeToByteArray(serializer, value)
-  }
-}
-
-/**
  * The serial file for coding with Protocol Buffers files.
  * By default [format] is [DefaultProtocolBufferStrategyFormat].
  * Also loads the file when constructs a new instance of this class.
@@ -64,8 +44,8 @@ class ProtocolBufferFile<T : Any>(
   override var file: File,
   override var model: T,
   override var serial: KSerializer<T>,
-  override var format: io.github.uinnn.serializer.AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
-) : io.github.uinnn.serializer.BinarySerialFile<T> {
+  override var format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
+) : BinarySerialFile<T> {
   override var settings = model
   override var observers: Observers = Observers()
 
@@ -85,7 +65,7 @@ fun <T : Any> protobuf(
   file: File,
   model: T,
   serial: KSerializer<T>,
-  format: io.github.uinnn.serializer.AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(file, model, serial, format)
 
 /**
@@ -101,7 +81,7 @@ fun <T : Any> Plugin.protobuf(
   file: String,
   model: T,
   serial: KSerializer<T>,
-  format: io.github.uinnn.serializer.AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(File(dataFolder, "$file.proto"), model, serial, format)
 
 /**
@@ -131,7 +111,7 @@ fun <T : Any> Plugin.protobuf(
 fun <T : Any> protobuf(
   file: File,
   model: KClass<T>,
-  format: io.github.uinnn.serializer.AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(file, model.createInstance(), model.serializer(), format)
 
 /**
@@ -164,5 +144,5 @@ fun <T : Any> protobuf(
 fun <T : Any> Plugin.protobuf(
   file: String,
   model: KClass<T>,
-  format: io.github.uinnn.serializer.AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
+  format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ) = ProtocolBufferFile(File(dataFolder, "$file.proto"), model.createInstance(), model.serializer(), format)
