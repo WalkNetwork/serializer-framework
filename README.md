@@ -218,7 +218,7 @@ repositories {
 }
 
 dependencies {
-  implementation("io.github.uinnn:serializer-framework:1.3.2") // replaces with the most recent version
+  implementation("io.github.uinnn:serializer-framework:1.4") // replaces with the most recent version
 }
 ```
 
