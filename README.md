@@ -169,36 +169,21 @@ So if you want to implement your own strategy, you have to review or add support
 ### Setup for creating custom Strategy:
 In this example, we will use the StringFormat type:
 
-1. Create a custom class that implements AlterableStringFormat:
-
-```kotlin
-class AlterableCustomFormat(
-  override var serializersModule: SerializersModule,
-  val model: StringFormat
-) : AlterableStringFormat {
-  override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-    return model.decodeFromString(deserializer, string)
-  }
-
-  override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
-    return model.encodeToString(serializer, value)
-  }
-}
-```
-
-2. Create a lazy init property thats holds the AlterableCustomFormat class:
+1. Create a lazy init property thats holds your custom serial format:
+> Note: This step is OPTIONAL, you DONT need follow this step if you dont want.
+> You can use a made-in format such as `DefaultYamlFormat` or `DefaultJsonFormat` or any other default format
 
 ```kotlin
 // in this example we use for YAML files. But you can do with JSON too.
 val CustomYamlFormat by lazy {
-  AlterableCustomFormat(
+  Alterables.string(
     FrameworkModule,
     Yaml(FrameworkModule, YamlConfiguration(polymorphismStyle = PolymorphismStyle.Property))
   )
 }
 ```
 
-3. Create a lazy init property thats holds the StrategySerialFormat for your CustomYamlFormat:
+2. Create a lazy init property thats holds the StrategySerialFormat for your CustomYamlFormat:
 
 ```kotlin
 val CustomYamlStrategyFormat by lazy {
