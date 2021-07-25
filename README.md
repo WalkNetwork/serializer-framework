@@ -212,6 +212,8 @@ config.format = CustomYamlStrategyFormat
 ## Setup for development
 The `serializer-framework` is in the central maven repository. Thus making things very easy!
 
+### Gradle Kotlin DSL
+
 ```gradle
 repositories {
   mavenCentral()
@@ -220,6 +222,16 @@ repositories {
 dependencies {
   implementation("io.github.uinnn:serializer-framework:1.4") // replaces with the most recent version
 }
+```
+
+### Maven
+
+```maven
+<dependency>
+  <groupId>io.github.uinnn</groupId>
+  <artifactId>serializer-framework</artifactId>
+  <version>1.4</version>
+</dependency>
 ```
 
 ### Final notes
