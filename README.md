@@ -1,8 +1,8 @@
-<a href="https://github.com/anuraghazra/github-readme-stats">
+<a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://github-readme-stats.vercel.app/api?username=uinnn&show_icons=true&theme=cobalt&hide_border=true"/>
 </a>
 <br>
-<a href="https://github.com/anuraghazra/convoychat">
+<a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=uinnn&repo=serializer-framework&show_icons=true&theme=cobalt&hide_border=truet"/>
 </a>
 
