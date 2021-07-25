@@ -215,7 +215,7 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.4") // replaces with the most recent version
+implementation("io.github.uinnn:serializer-framework:1.4")
 ```
 
 ### Gradle
