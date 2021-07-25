@@ -31,7 +31,7 @@ Let's assume you have a serializable class called Settings:
 data class Settings(var name: String = "§auinnn")
 ```
 
-Now let's suppose you want to transfer the class to a YAML file:
+Now let's suppose you want to transfer the class to a file:
 > Note: when creating any instance of a serial file will directly loads.
 
 ```kotlin
