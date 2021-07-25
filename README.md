@@ -140,10 +140,14 @@ Strategy is a way to modify how Kotlin Serialization should encode or decode str
 An example of how it works with a default strategy already defined in the framework:
 
 ```kotlin
-object ColorStrategy : Strategy // Strategy implements EncoderStrategy and DecoderStrategy {
-  override fun encodeString(descriptor: SerialDescriptor, index: Int, value: String) = value.replace('§', '&')
+object ColorStrategy : Strategy /* Strategy implements EncoderStrategy and DecoderStrategy */ {
+  override fun encodeString(descriptor: SerialDescriptor, index: Int, value: String): String {
+    return value.replace('§', '&')
+  }
 
-  override fun decodeString(descriptor: SerialDescriptor, index: Int, value: String) = value.replace('&', '§')
+  override fun decodeString(descriptor: SerialDescriptor, index: Int, value: String): String {
+    return value.replace('&', '§')
+  }
 }
 ```
 
