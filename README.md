@@ -22,6 +22,12 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * JSON
 * Protocol Buffers
 
+---
+
+### Documentation: [documentantion](https://uinnn.github.io/serializer-framework/)
+
+---
+
 ### How To Use
 If you've come this far and are curious to see how this framework works, I'll show you!
 Let's assume you have a serializable class called Settings:
