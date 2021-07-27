@@ -5,6 +5,11 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 
+/**
+ * A decoder strategy used to changes how kotlin serialization
+ * should decode strings, booleans, numbers and chars.
+ * Also can change the [CompositeDecoder.decodeElementIndex] with [decodeIndex]
+ */
 interface DecoderStrategy {
   fun decodeString(descriptor: SerialDescriptor, index: Int, value: String) = value
   fun decodeBoolean(descriptor: SerialDescriptor, index: Int, value: Boolean) = value
@@ -18,6 +23,9 @@ interface DecoderStrategy {
   fun decodeIndex(descriptor: SerialDescriptor, value: Int) = value
 }
 
+/**
+ * The default [DeserializationStrategy] to work with strategies.
+ */
 class DefaultSerialDecoder<T>(
   val strategy: DecoderStrategy,
   val model: DeserializationStrategy<T>,
@@ -27,6 +35,9 @@ class DefaultSerialDecoder<T>(
   }
 }
 
+/**
+ * The default [Decoder] to work with strategies.
+ */
 class DefaultDecoder(val strategy: DecoderStrategy, val model: Decoder) : Decoder by model {
   override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
     return deserializer.deserialize(model)
@@ -37,6 +48,9 @@ class DefaultDecoder(val strategy: DecoderStrategy, val model: Decoder) : Decode
   }
 }
 
+/**
+ * The default [CompositeDecoder] to work with strategies.
+ */
 class DefaultCompositeDecoder(
   val strategy: DecoderStrategy,
   val model: CompositeDecoder,

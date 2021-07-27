@@ -4,6 +4,18 @@ import io.github.uinnn.serializer.serial.*
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
+/**
+ * The default `serializer-framework` module.
+ * This contains serializers to:
+ * * Enchantment
+ * * ItemStack
+ * * Location
+ * * MaterialData
+ * * Player
+ * * StringList (replaces all '&' to '§' and vice-versa)
+ * * UUID
+ * * World
+ */
 val FrameworkModule by lazy {
   SerializersModule {
     contextual(EnchantmentSerializer)

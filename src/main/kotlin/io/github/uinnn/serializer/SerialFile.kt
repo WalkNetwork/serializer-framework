@@ -3,6 +3,12 @@ package io.github.uinnn.serializer
 import kotlinx.serialization.KSerializer
 import java.io.File
 
+/**
+ * A SerialFile is a configurable file that can
+ * reloads, saves, etc with [Observable]. Serials files
+ * holds a model to know what he will serialize or deserialize
+ * in the content of the file.
+ */
 interface SerialFile<T : Any> : Observable {
 
   /**

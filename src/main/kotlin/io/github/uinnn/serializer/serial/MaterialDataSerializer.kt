@@ -8,6 +8,14 @@ import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Material
 import org.bukkit.material.MaterialData
 
+/**
+ * A serializer for MaterialData.
+ * This will serialize something like this (IN YAML)
+ * A grass material example:
+ * ```yaml
+ * material: "1:0"
+ * ```
+ */
 object MaterialDataSerializer : KSerializer<MaterialData> {
   override val descriptor = PrimitiveSerialDescriptor("MaterialData", PrimitiveKind.STRING)
 

@@ -5,6 +5,10 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Encoder
 
+/**
+ * A encoder strategy used to changes how kotlin serialization
+ * should encode strings, booleans, numbers and chars.
+ */
 interface EncoderStrategy {
   fun encodeString(descriptor: SerialDescriptor, index: Int, value: String) = value
   fun encodeBoolean(descriptor: SerialDescriptor, index: Int, value: Boolean) = value
@@ -17,6 +21,9 @@ interface EncoderStrategy {
   fun encodeChar(descriptor: SerialDescriptor, index: Int, value: Char) = value
 }
 
+/**
+ * The default [SerializationStrategy] to work with strategies.
+ */
 class DefaultSerialEncoder<in T>(
   val strategy: EncoderStrategy,
   val model: SerializationStrategy<T>,
@@ -26,6 +33,9 @@ class DefaultSerialEncoder<in T>(
   }
 }
 
+/**
+ * The default [Encoder] to work with strategies.
+ */
 class DefaultEncoder(val strategy: EncoderStrategy, val model: Encoder) : Encoder by model {
   override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
     serializer.serialize(model, value)
@@ -40,6 +50,9 @@ class DefaultEncoder(val strategy: EncoderStrategy, val model: Encoder) : Encode
   }
 }
 
+/**
+ * The default [CompositeEncoder] to work with strategies.
+ */
 class DefaultCompositeEncoder(
   val strategy: EncoderStrategy,
   val model: CompositeEncoder,

@@ -9,6 +9,21 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.material.MaterialData
 
+/**
+ * A serializer for ItemStack.
+ * This will serialize something like this (IN YAML)
+ * ```yaml
+ * item:
+ *   name: "&eItem"
+ *   material: "2:0"
+ *   amount: 1
+ *   glow: false
+ *   lore:
+ *     - "&7Hi! I'm a lore!"
+ *   enchantments:
+ *     - "DURABILITY(1)"
+ * ```
+ */
 object ItemStackSerializer : KSerializer<ItemStack> {
   override val descriptor = buildClassSerialDescriptor("ItemStack") {
     element<String>("name")

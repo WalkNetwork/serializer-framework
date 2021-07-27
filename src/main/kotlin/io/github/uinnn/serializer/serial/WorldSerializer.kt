@@ -8,6 +8,13 @@ import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Bukkit
 import org.bukkit.World
 
+/**
+ * A serializer for World.
+ * This will serialize something like this (IN YAML)
+ * ```yaml
+ * world: "world"
+ * ```
+ */
 object WorldSerializer : KSerializer<World> {
   override val descriptor = PrimitiveSerialDescriptor("World", PrimitiveKind.STRING)
   override fun deserialize(decoder: Decoder): World = runCatching {

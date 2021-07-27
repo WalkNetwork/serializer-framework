@@ -8,6 +8,13 @@ import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
+/**
+ * A serializer for Location.
+ * This will serialize something like this (IN YAML)
+ * ```yaml
+ * location: "world|5|66|0"
+ * ```
+ */
 object LocationSerializer : KSerializer<Location> {
   override val descriptor = PrimitiveSerialDescriptor("Location", PrimitiveKind.STRING)
   override fun deserialize(decoder: Decoder): Location {

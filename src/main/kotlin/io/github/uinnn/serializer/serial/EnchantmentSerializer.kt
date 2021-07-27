@@ -5,6 +5,15 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.*
 import org.bukkit.enchantments.Enchantment
 
+/**
+ * A serializer for Enchantment.
+ * This will serialize something like this (IN YAML)
+ * ```yaml
+ * enchantments:
+ *   - DIG_SPEED(5)
+ *   - LOOT_BONUS_BLOCKS(25)
+ * ```
+ */
 object EnchantmentSerializer : KSerializer<Map<Enchantment, Int>> {
   override val descriptor = listSerialDescriptor<String>()
 

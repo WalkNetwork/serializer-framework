@@ -7,8 +7,16 @@ import io.github.uinnn.serializer.strategy.DefaultSerialEncoder
 import io.github.uinnn.serializer.strategy.EncoderStrategy
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.StringFormat
 import kotlinx.serialization.modules.SerializersModule
 
+/**
+ * A string strategy formatter.
+ * This is used to modify how kotlin serialization
+ * should encode or decode strings, numbers, chars and booleans.
+ * This formatter is only able to use with [StringFormat]
+ * serial files, suchs as JSON and YAML files.
+ */
 open class StrategyStringFormatter(
   override val model: AlterableStringFormat,
   encoder: EncoderStrategy,

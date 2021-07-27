@@ -4,6 +4,12 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.*
 
+/**
+ * A serializer for String Lists. By default
+ * kotlin serialization already adds supports for
+ * lists serializers. So this is just a "strategy" to
+ * encode and decode color symbols, like '&' to '§' and vice-versa
+ */
 object StringListSerializer : KSerializer<List<String>> {
   override val descriptor = listSerialDescriptor<String>()
 

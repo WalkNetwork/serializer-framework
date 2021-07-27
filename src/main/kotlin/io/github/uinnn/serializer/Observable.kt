@@ -5,7 +5,17 @@ import java.util.*
 typealias ObserverAction = SerialFile<*>.() -> Unit
 typealias ObserverSet = HashSet<ObserverAction>
 
+/**
+ * A observable handler, this is, everything that will
+ * occours with the serial file, such as loads, creates, reloads
+ * and saves, will observe then. This is like a event handler.
+ */
 interface Observable {
+
+  /**
+   * All registered observers of this
+   * observable object.
+   */
   var observers: Observers
 
   /**

@@ -1,5 +1,9 @@
 package io.github.uinnn.serializer
 
+/**
+ * A StringSerialFile is a [SerialFile] for String format
+ * files, such as JSON and YAML.
+ */
 interface StringSerialFile<T : Any> : SerialFile<T> {
   override var format: AlterableStringFormat
 

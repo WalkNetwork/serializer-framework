@@ -3,6 +3,10 @@ package io.github.uinnn.serializer
 import kotlinx.serialization.decodeFromHexString
 import kotlinx.serialization.encodeToHexString
 
+/**
+ * A BinarySerialFile is a [SerialFile] for Binary format
+ * files, such as Protocol Buffers.
+ */
 interface BinarySerialFile<T : Any> : SerialFile<T> {
   override var format: AlterableBinaryFormat
 
