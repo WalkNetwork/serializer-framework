@@ -28,7 +28,7 @@ Let's assume you have a serializable class called Settings:
 
 ```kotlin
 @Serializable
-data class Settings(var name: String = "§auinnn")
+data class Settings(var name: String = "uinnn")
 ```
 
 Now let's suppose you want to transfer the class to a file:
@@ -83,12 +83,12 @@ Registering a observer:
 
 ```kotlin
 config.onObserve(ObserverKind.LOAD) {
-  println("§aSerial File Loaded!")
+  println("Serial File Loaded!")
 }
 
 // shortcut:
 config.onLoad {
-  println("§aSerial File Loaded!")
+  println("Serial File Loaded!")
 }
 ```
 
