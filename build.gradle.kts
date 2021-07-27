@@ -5,8 +5,8 @@ plugins {
   id("com.github.johnrengelman.shadow") version "6.0.0"
   id("maven-publish")
   id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-  id("java-library")
   id("signing")
+  id("org.jetbrains.dokka") version "1.5.0"
 }
 
 group = "io.github.uinnn"
