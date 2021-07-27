@@ -1,9 +1,9 @@
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://github-readme-stats.vercel.app/api?username=uinnn&show_icons=true&bg_color=180DEG,b06ab3,4568dc,2193b0&theme=synthwave&hide_border=true"/>
+  <img align="center" src="https://github-readme-stats.vercel.app/api?username=uinnn&show_icons=true&theme=cobalt&hide_border=true"/>
 </a>
 <br>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=uinnn&repo=serializer-framework&show_icons=true&bg_color=180DEG,b06ab3,4568dc,2193b0&theme=synthwave&hide_border=truet"/>
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=uinnn&repo=serializer-framework&show_icons=true&theme=cobalt&hide_border=truet"/>
 </a>
 
 # serializer-framework
@@ -28,10 +28,10 @@ Let's assume you have a serializable class called Settings:
 
 ```kotlin
 @Serializable
-data class Settings(var name: String = "§auinnn")
+data class Settings(var name: String = "uinnn")
 ```
 
-Now let's suppose you want to transfer the class to a YAML file:
+Now let's suppose you want to transfer the class to a file:
 > Note: when creating any instance of a serial file will directly loads.
 
 ```kotlin
@@ -83,12 +83,12 @@ Registering a observer:
 
 ```kotlin
 config.onObserve(ObserverKind.LOAD) {
-  println("§aSerial File Loaded!")
+  println("Serial File Loaded!")
 }
 
 // shortcut:
 config.onLoad {
-  println("§aSerial File Loaded!")
+  println("Serial File Loaded!")
 }
 ```
 
@@ -140,10 +140,14 @@ Strategy is a way to modify how Kotlin Serialization should encode or decode str
 An example of how it works with a default strategy already defined in the framework:
 
 ```kotlin
-object ColorStrategy : Strategy // Strategy implements EncoderStrategy and DecoderStrategy {
-  override fun encodeString(descriptor: SerialDescriptor, index: Int, value: String) = value.replace('§', '&')
+object ColorStrategy : Strategy /* Strategy implements EncoderStrategy and DecoderStrategy */ {
+  override fun encodeString(descriptor: SerialDescriptor, index: Int, value: String): String {
+    return value.replace('§', '&')
+  }
 
-  override fun decodeString(descriptor: SerialDescriptor, index: Int, value: String) = value.replace('&', '§')
+  override fun decodeString(descriptor: SerialDescriptor, index: Int, value: String): String {
+    return value.replace('&', '§')
+  }
 }
 ```
 
@@ -169,36 +173,21 @@ So if you want to implement your own strategy, you have to review or add support
 ### Setup for creating custom Strategy:
 In this example, we will use the StringFormat type:
 
-1. Create a custom class that implements AlterableStringFormat:
-
-```kotlin
-class AlterableCustomFormat(
-  override var serializersModule: SerializersModule,
-  val model: StringFormat
-) : AlterableStringFormat {
-  override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-    return model.decodeFromString(deserializer, string)
-  }
-
-  override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
-    return model.encodeToString(serializer, value)
-  }
-}
-```
-
-2. Create a lazy init property thats holds the AlterableCustomFormat class:
+1. Create a lazy init property thats holds your custom serial format:
+> Note: This step is OPTIONAL, you DONT need follow this step if you dont want.
+> You can use a made-in format such as `DefaultYamlFormat` or `DefaultJsonFormat` or any other default format
 
 ```kotlin
 // in this example we use for YAML files. But you can do with JSON too.
 val CustomYamlFormat by lazy {
-  AlterableCustomFormat(
+  Alterables.string(
     FrameworkModule,
     Yaml(FrameworkModule, YamlConfiguration(polymorphismStyle = PolymorphismStyle.Property))
   )
 }
 ```
 
-3. Create a lazy init property thats holds the StrategySerialFormat for your CustomYamlFormat:
+2. Create a lazy init property thats holds the StrategySerialFormat for your CustomYamlFormat:
 
 ```kotlin
 val CustomYamlStrategyFormat by lazy {
@@ -227,14 +216,25 @@ config.format = CustomYamlStrategyFormat
 ## Setup for development
 The `serializer-framework` is in the central maven repository. Thus making things very easy!
 
-```gradle
-repositories {
-  mavenCentral()
-}
+### Gradle Kotlin DSL
 
-dependencies {
-  implementation("io.github.uinnn:serializer-framework:1.3.2") // replaces with the most recent version
-}
+```gradle
+implementation("io.github.uinnn:serializer-framework:1.4")
+```
+
+### Gradle
+```gradle
+implementation 'io.github.uinnn:serializer-framework:1.4'
+```
+
+### Maven
+
+```maven
+<dependency>
+  <groupId>io.github.uinnn</groupId>
+  <artifactId>serializer-framework</artifactId>
+  <version>1.4</version>
+</dependency>
 ```
 
 ### Final notes
