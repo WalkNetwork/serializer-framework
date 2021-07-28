@@ -24,7 +24,7 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 
 ---
 
-### See [documentantion](https://uinnn.github.io/serializer-framework/)
+### See [documentation](https://uinnn.github.io/serializer-framework/)
 
 ---
 
