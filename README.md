@@ -235,7 +235,7 @@ implementation 'io.github.uinnn:serializer-framework:1.4'
 
 ### Maven
 
-```maven
+```xml
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
