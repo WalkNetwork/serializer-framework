@@ -5,7 +5,7 @@
 # serializer-framework
 Is a lightweight kotlin serializer library to standalone or spigot use!
 
-### Objective
+### Objective 📝
 The Kotlin serialization library is really awesome, however certain things you have to do manually,
 like writing the string to a file. With `serializer-framework` you can do this and much more!
 Although this framework was planned and structured for use with Bukkit/Spigot, you can use it as a Standalone, thus making this library very extensible.
@@ -13,10 +13,12 @@ You can load, reload, save and clear the file easily!
 If you're a Bukkit/Spigot developer, you might be tired of always when getting a string value or a list of strings in your plugin configuration,
 always having to translate color codes like '&' to '§' and vice- versa. With `serializer-framework`, you never need to do this again!
 
-### Supported Files
-* YAML
-* JSON
-* Protocol Buffers
+### Supported Files 
+* YAML ✔️
+* JSON ✔️
+* Protocol Buffers ✔️
+* Minecraft NBT (.dat) :x:
+* XML :x:
 
 ---
 
@@ -168,52 +170,28 @@ object ReverseBooleanStrategy : EncoderStrategy, DecoderStrategy {
 ```
 
 ### Applying your custom Strategy:
-To apply your custom strategy, you must create a StrategySerialFormatter.
-Depending on the type of file you want, for example JSON or YAML are files of StringFormat type, however the ProtocolBuffer is a file of BinaryFormat type.
-So if you want to implement your own strategy, you have to review or add support for one of these file types.
+Has two ways to apply your custom strategy
 
-### Setup for creating custom Strategy:
-In this example, we will use the StringFormat type:
-
-1. Create a lazy init property thats holds your custom serial format:
-> Note: This step is OPTIONAL, you DONT need follow this step if you dont want.
-> You can use a made-in format such as `DefaultYamlFormat` or `DefaultJsonFormat` or any other default format
-
+1. Creating a separeted strategy format property:
 ```kotlin
-// in this example we use for YAML files. But you can do with JSON too.
-val CustomYamlFormat by lazy {
-  Alterables.string(
-    FrameworkModule,
-    Yaml(FrameworkModule, YamlConfiguration(polymorphismStyle = PolymorphismStyle.Property))
-  )
-}
-```
-
-2. Create a lazy init property thats holds the StrategySerialFormat for your CustomYamlFormat:
-
-```kotlin
+// here we use for yaml format
 val CustomYamlStrategyFormat by lazy {
-  StrategyStringFormatter(CustomYamlFormat, ReverseBooleanStrategy /* encoder */, ReverseBooleanStrategy /* decoder */)
+  StrategyStringFormatter(DefaultYamlFormat, encoder = ReverseBooleanStrategy, decoder = ReverseBooleanStrategy)
 }
-```
 
-And ready! You already have your own custom strategy!
+// now using them:
+config.format = CustomYamlStrategyFormat
 
-### Using your custom strategy
-Now that you've created your own strategy, you might be wondering how to use it, right? Well, there are two ways:
-
-### Using your custom format when init a serial file:
-
-```kotlin
+// or when init:
 val config = yaml(file, Settings::class, CustomYamlStrategyFormat)
 ```
 
-### Using with a already existent serial file:
-
+2. Overwriting the old strategy:
 ```kotlin
-config.format = CustomYamlStrategyFormat
+config.format.encoder = ReverseBooleanStrategy
+config.format.decoder = ReverseBooleanStrategy
 ```
-
+And ready! You already applied your own custom strategy!
 
 ## Setup for development
 The `serializer-framework` is in the central maven repository. Thus making things very easy!
