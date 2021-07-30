@@ -73,6 +73,18 @@ Clearing a serial file:
 config.clear()
 ```
 
+Getting the raw content of the serial file:
+
+```kotlin
+config.content
+```
+
+Transforming to another file location:
+
+```kotlin
+config.transformFile(newFile)
+```
+
 ### Observers
 Observers is an event handler that will be triggered when a reaction occurs with the serial file.
 There are currently five observers:
