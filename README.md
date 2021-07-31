@@ -1,5 +1,14 @@
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=uinnn&repo=serializer-framework&show_icons=true&theme=cobalt&hide_border=truet"/>
+  <img align="center" src="https://img.shields.io/static/v1?label=author&message=uinnn&color=informational"/>
+</a>
+<a href="https://github.com/uinnn/serializer-framework">
+  <img align="center" src="https://img.shields.io/static/v1?label=version&message=1.4v&color=ff69b4"/>
+</a>
+<a href="https://github.com/uinnn/serializer-framework">
+  <img align="center" src="https://img.shields.io/static/v1?label=maven-central&message=1.4&color=orange"/>
+</a>
+<a href="https://github.com/uinnn/serializer-framework">
+  <img align="center" src="https://img.shields.io/static/v1?label=license&message=General-Public-License&color=success"/>
 </a>
 
 # serializer-framework
