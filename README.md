@@ -17,8 +17,8 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * YAML ✔️
 * JSON ✔️
 * Protocol Buffers ✔️
-* Minecraft NBT (.dat) :x:
-* XML :x:
+* Minecraft NBT (.dat) :x: (Support planned to 08/01/2021)
+* XML :x: (Support planned to 08/01/2021)
 
 ---
 
