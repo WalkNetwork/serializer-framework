@@ -28,7 +28,7 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * Protocol Buffers ✔️
 * Minecraft NBT (.dat) ✔️
 
-### 1.5 Patch notes (07/31/2021)
+### 1.5v Patch notes (07/31/2021)
 * Updated serialization libraries dependencies to a newer version.
 * Added support for serialization libraries thats need a input/output stream.
 * Added support for Minecraft NBT (.dat) files.
