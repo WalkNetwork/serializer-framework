@@ -1,3 +1,27 @@
+/*
+                             MIT License
+
+                        Copyright (c) 2021 uin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package io.github.uinnn.serializer
 
 import io.github.uinnn.serializer.common.FrameworkModule
@@ -101,7 +125,7 @@ fun <T : Any> json(
   model: T,
   serial: KSerializer<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
-) = JsonFile(file, model, serial, format)
+): StringSerialFile<T> = JsonFile(file, model, serial, format)
 
 /**
  * Constructs and loads a JSON file inside of the datafolder of this plugin.
@@ -117,7 +141,7 @@ fun <T : Any> Plugin.json(
   model: T,
   serial: KSerializer<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
-) = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
+): StringSerialFile<T> = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
 
 /**
  * Constructs and loads a JSON file.
@@ -147,7 +171,7 @@ fun <T : Any> json(
   file: File,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
-) = JsonFile(file, model.createInstance(), model.serializer(), format)
+): StringSerialFile<T> = JsonFile(file, model.createInstance(), model.serializer(), format)
 
 /**
  * Constructs and loads a JSON file inside of the datafolder of this plugin.
@@ -180,4 +204,5 @@ fun <T : Any> Plugin.json(
   file: String,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
-) = JsonFile(File(dataFolder, "$file.json"), model.createInstance(), model.serializer(), format)
+): StringSerialFile<T> =
+  JsonFile(File(dataFolder, "$file.json"), model.createInstance(), model.serializer(), format)

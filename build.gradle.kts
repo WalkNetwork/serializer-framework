@@ -1,6 +1,6 @@
 plugins {
-  kotlin("jvm") version "1.5.20"
-  kotlin("plugin.serialization") version "1.5.20"
+  kotlin("jvm") version "1.5.21"
+  kotlin("plugin.serialization") version "1.5.21"
   id("java")
   id("com.github.johnrengelman.shadow") version "6.0.0"
   id("maven-publish")
@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.uinnn"
-version = "1.4"
+version = "1.5"
 
 repositories {
   mavenCentral()
@@ -20,11 +20,12 @@ repositories {
 dependencies {
   compileOnly("com.single.api:spigot:1.8.9")
   compileOnly(kotlin("stdlib-jdk8"))
-  compileOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.20")
-  compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
-  compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-  compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.2.2")
-  compileOnly("com.charleskorn.kaml:kaml:0.34.0")
+  compileOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
+  api("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
+  api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+  api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.2.2")
+  api("com.charleskorn.kaml:kaml:0.35.0")
+  api("net.benwoodworth.knbt:knbt:0.6.1")
 }
 
 nexusPublishing {
