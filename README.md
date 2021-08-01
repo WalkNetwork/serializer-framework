@@ -33,13 +33,9 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * Added support for serialization libraries thats need a input/output stream.
 * Added support for Minecraft NBT (.dat) files.
 
----
-
-### See [documentation](https://uinnn.github.io/serializer-framework/)
-
----
-
 ### How To Use
+#### You can see the dokka documentation [here](https://uinnn.github.io/serializer-framework/)
+
 If you've come this far and are curious to see how this framework works, I'll show you!
 Let's assume you have a serializable class called Settings:
 
