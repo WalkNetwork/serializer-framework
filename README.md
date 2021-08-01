@@ -8,7 +8,7 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.4&color=orange"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=General-Public-License&color=success"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
 </a>
 
 # serializer-framework
@@ -27,7 +27,6 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * JSON ✔️
 * Protocol Buffers ✔️
 * Minecraft NBT (.dat) :x: (Support planned to 08/01/2021)
-* XML :x: (Support planned to 08/01/2021)
 
 ---
 
@@ -245,16 +244,17 @@ To make your life easier, here is all the implementation of the libraries needed
 
 ```gradle
 plugins {
-  kotlin("jvm") version "1.5.20"
-  kotlin("plugin.serialization") version "1.5.20"
+  kotlin("jvm") version "1.5.21"
+  kotlin("plugin.serialization") version "1.5.21"
 }
 
 dependencies {
   implementation(kotlin("stdlib-jdk8")) // the kotlin std lib with jdk8
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.20") // the kotlin reflect 1.5.20
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21") // the kotlin reflect 1.5.20
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2") // the kotlin serialization core 1.2.2
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") // the kotlin json serialization 1.2.2
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.2.2") // the kotlin protobuf serialization 1.2.2
-  implementation("com.charleskorn.kaml:kaml:0.34.0") // the yaml serialization 0.34.0
+  implementation("com.charleskorn.kaml:kaml:0.35.0") // the yaml serialization 0.35.0
+  implementation("net.benwoodworth.knbt:knbt:0.6.1") // the minecraft nbt (.dat) serialization 0.6.1
 }
 ```
