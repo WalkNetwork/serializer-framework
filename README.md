@@ -2,10 +2,10 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=author&message=uinnn&color=informational"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.5v&color=ff69b4"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.5.2v&color=ff69b4"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.5&color=orange"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.5.2&color=orange"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
@@ -28,10 +28,9 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * Protocol Buffers ✔️
 * Minecraft NBT (.dat) ✔️
 
-### 1.5v Patch notes (07/31/2021)
-* Updated serialization libraries dependencies to a newer version.
-* Added support for serialization libraries thats need a input/output stream.
-* Added support for Minecraft NBT (.dat) files.
+### 1.5.2v Patch notes
+* Now binary serial files encode/decode from byte arrays instead of hex string.
+* Binary serial file size encoding decreased ~50%
 
 ### How To Use
 #### You can see the dokka documentation [here](https://uinnn.github.io/serializer-framework/)
@@ -49,19 +48,29 @@ Now let's suppose you want to transfer the class to a file:
 
 ```kotlin
 // by yaml
-val yamlConfig by lazy { yaml(file, Settings::class) }
+val yamlConfig by lazy {
+  yaml(file, Settings())
+}
 
 // by json
-val jsonConfig by lazy { json(file, Settings::class) }
+val jsonConfig by lazy {
+  json(file, Settings())
+}
 
 // by protobuf
-val protobufConfig by lazy { protobuf(file, Settings::class) }
+val protobufConfig by lazy {
+  protobuf(file, Settings())
+}
 
 // by named binary tag (nbt, also .dat files)
-val nbtConfig by lazy { nbt(file, Settings::class) }
+val nbtConfig by lazy { 
+  nbt(file, Settings())
+}
 
 // with plugin (adds in the datafolder of the plugin)
-val pluginConfig by lazy { plugin.yaml("settings" /* already add a .yaml extension */, Settings::class) }
+val pluginConfig by lazy { 
+  plugin.yaml("settings" /* already add a .yaml extension */, Settings())
+}
 ```
 
 Getting the settings model class:
@@ -227,12 +236,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.5")
+implementation("io.github.uinnn:serializer-framework:1.5.2")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.5'
+implementation 'io.github.uinnn:serializer-framework:1.5.2'
 ```
 
 ### Maven
@@ -241,7 +250,7 @@ implementation 'io.github.uinnn:serializer-framework:1.5'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.5</version>
+  <version>1.5.2</version>
 </dependency>
 ```
 
