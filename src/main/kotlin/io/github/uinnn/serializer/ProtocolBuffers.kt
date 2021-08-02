@@ -88,7 +88,7 @@ class ProtocolBufferFile<T : Any>(
 fun <T : Any> protobuf(
   file: File,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ): BinarySerialFile<T> = ProtocolBufferFile(file, model, serial, format)
 
@@ -104,7 +104,7 @@ fun <T : Any> protobuf(
 fun <T : Any> Plugin.protobuf(
   file: String,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
 ): BinarySerialFile<T> = ProtocolBufferFile(File(dataFolder, "$file.proto"), model, serial, format)
 

@@ -90,7 +90,7 @@ class YamlFile<T : Any>(
 fun <T : Any> yaml(
   file: File,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStringFormat = DefaultYamlStrategyFormat
 ): StringSerialFile<T> = YamlFile(file, model, serial, format)
 
@@ -106,7 +106,7 @@ fun <T : Any> yaml(
 fun <T : Any> Plugin.yaml(
   file: String,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStringFormat = DefaultYamlStrategyFormat
 ): StringSerialFile<T> = YamlFile(File(dataFolder, "$file.yaml"), model, serial, format)
 

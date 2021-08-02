@@ -92,7 +92,7 @@ class NamedBinaryTagFile<T : Any>(
 fun <T : Any> nbt(
   file: File,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStreamFormat = DefaultNamedBinaryTagStrategyFormat
 ): StreamSerialFile<T> = NamedBinaryTagFile(file, model, serial, format)
 
@@ -108,7 +108,7 @@ fun <T : Any> nbt(
 fun <T : Any> Plugin.nbt(
   file: String,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStreamFormat = DefaultNamedBinaryTagStrategyFormat
 ): StreamSerialFile<T> = NamedBinaryTagFile(File(dataFolder, "$file.dat"), model, serial, format)
 

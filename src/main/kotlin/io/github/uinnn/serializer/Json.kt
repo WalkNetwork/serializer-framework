@@ -123,7 +123,7 @@ class JsonFile<T : Any>(
 fun <T : Any> json(
   file: File,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
 ): StringSerialFile<T> = JsonFile(file, model, serial, format)
 
@@ -139,7 +139,7 @@ fun <T : Any> json(
 fun <T : Any> Plugin.json(
   file: String,
   model: T,
-  serial: KSerializer<T>,
+  serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
 ): StringSerialFile<T> = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
 
