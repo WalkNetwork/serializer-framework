@@ -26,15 +26,16 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * YAML ✔️
 * JSON ✔️
 * Protocol Buffers ✔️
-* Minecraft NBT (.dat) :x: (Support planned to 08/01/2021)
+* Minecraft NBT (.dat) ✔️
 
----
-
-### See [documentation](https://uinnn.github.io/serializer-framework/)
-
----
+### 1.5v Patch notes (07/31/2021)
+* Updated serialization libraries dependencies to a newer version.
+* Added support for serialization libraries thats need a input/output stream.
+* Added support for Minecraft NBT (.dat) files.
 
 ### How To Use
+#### You can see the dokka documentation [here](https://uinnn.github.io/serializer-framework/)
+
 If you've come this far and are curious to see how this framework works, I'll show you!
 Let's assume you have a serializable class called Settings:
 
@@ -47,13 +48,20 @@ Now let's suppose you want to transfer the class to a file:
 > Note: when creating any instance of a serial file will directly loads.
 
 ```kotlin
-val configYaml by lazy { yaml(file, Settings::class) }
-val configJson by lazy { json(file, Settings::class) }
-val configProtoBuf by lazy { protobuf(file, Settings::class) }
+// by yaml
+val yamlConfig by lazy { yaml(file, Settings::class) }
+
+// by json
+val jsonConfig by lazy { json(file, Settings::class) }
+
+// by protobuf
+val protobufConfig by lazy { protobuf(file, Settings::class) }
+
+// by named binary tag (nbt, also .dat files)
+val nbtConfig by lazy { nbt(file, Settings::class) }
 
 // with plugin (adds in the datafolder of the plugin)
-val configYamlPlugin by lazy { plugin.yaml("settings" /* already add a .yaml extension */, Settings::class) }
-// ...
+val pluginConfig by lazy { plugin.yaml("settings" /* already add a .yaml extension */, Settings::class) }
 ```
 
 Getting the settings model class:
@@ -219,12 +227,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.4")
+implementation("io.github.uinnn:serializer-framework:1.5")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.4'
+implementation 'io.github.uinnn:serializer-framework:1.5'
 ```
 
 ### Maven
@@ -233,7 +241,7 @@ implementation 'io.github.uinnn:serializer-framework:1.4'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.4</version>
+  <version>1.5</version>
 </dependency>
 ```
 
@@ -250,7 +258,9 @@ plugins {
 
 dependencies {
   implementation(kotlin("stdlib-jdk8")) // the kotlin std lib with jdk8
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21") // the kotlin reflect 1.5.20
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21") // the kotlin reflect 1.5.21
+  
+  // NOTE VERSIONS 1.5+ NOW ALREADY ADDS THE DEPENDENCIES BELOW AS API.
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2") // the kotlin serialization core 1.2.2
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") // the kotlin json serialization 1.2.2
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.2.2") // the kotlin protobuf serialization 1.2.2
