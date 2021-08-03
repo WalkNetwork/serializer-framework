@@ -72,10 +72,24 @@ class ProtocolBufferFile<T : Any>(
 ) : BinarySerialFile<T> {
   override var settings = model
   override var observers: Observers = Observers()
+}
 
+/**
+ * Represents a binary folder compost only with protocol buffer serial files.
+ * All protocol buffer files loaded by the folder is compost of the model [T].
+ */
+class ProtocolBufferFolder<T : Any>(folder: File, model: T) : BinaryFolder<T>(folder, model) {
   init {
-    load()
+    implementsAll()
   }
+
+  override fun implement(file: String, model: T) {
+    implement(protobuf(File(folder, "$file.proto"), model))
+  }
+
+  override fun search() = folder
+    .listFiles { file -> file.extension == "proto" }!!
+    .map { file -> protobuf(file, model).also { it.load() } }
 }
 
 /**

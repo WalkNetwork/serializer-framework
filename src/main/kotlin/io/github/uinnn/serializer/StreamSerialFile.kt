@@ -33,21 +33,23 @@ interface StreamSerialFile<T : Any> : SerialFile<T> {
   override val format: AlterableStreamFormat
 
   override fun load() {
-    super.load()
     createFile()
     reload()
+    observe(ObserverKind.LOAD)
   }
 
   override fun reload() {
-    super.reload()
     settings = format.decodeFrom(file.inputStream().buffered(), serial)
+    observe(ObserverKind.RELOAD)
   }
 
   override fun save() {
     format.encodeTo(file.outputStream().buffered(), serial, settings)
+    observe(ObserverKind.SAVE)
   }
 
   override fun saveModel() {
     format.encodeTo(file.outputStream().buffered(), serial, model)
+    observe(ObserverKind.SAVE_MODEL)
   }
 }

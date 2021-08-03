@@ -76,10 +76,24 @@ class NamedBinaryTagFile<T : Any>(
 ) : StreamSerialFile<T> {
   override var settings = model
   override var observers: Observers = Observers()
+}
 
+/**
+ * Represents a stream folder compost only with named binary tag serial files.
+ * All named binary tag files loaded by the folder is compost of the model [T].
+ */
+class NamedBinaryTagFolder<T : Any>(folder: File, model: T) : StreamFolder<T>(folder, model) {
   init {
-    load()
+    implementsAll()
   }
+
+  override fun implement(file: String, model: T) {
+    implement(nbt(File(folder, "$file.dat"), model))
+  }
+
+  override fun search() = folder
+    .listFiles { file -> file.extension == "dat" }!!
+    .map { file -> nbt(file, model).also { it.load() } }
 }
 
 /**

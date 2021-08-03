@@ -114,6 +114,24 @@ class JsonFile<T : Any>(
 }
 
 /**
+ * Represents a string folder compost only with json serial files.
+ * All json files loaded by the folder is compost of the model [T].
+ */
+class JsonFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, model) {
+  init {
+    implementsAll()
+  }
+
+  override fun implement(file: String, model: T) {
+    implement(json(File(folder, "$file.json"), model))
+  }
+
+  override fun search() = folder
+    .listFiles { file -> file.extension == "json" }!!
+    .map { file -> json(file, model).also { it.load() } }
+}
+
+/**
  * Constructs and loads a JSON file.
  * The default format for JSON files is [DefaultJsonStrategyFormat],
  * thats contains a set of serializers and [ColorStrategy] as a

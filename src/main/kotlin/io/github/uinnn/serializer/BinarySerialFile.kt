@@ -32,23 +32,23 @@ interface BinarySerialFile<T : Any> : SerialFile<T> {
   override var format: AlterableBinaryFormat
 
   override fun load() {
-    super.load()
     createFile()
     reload()
+    observe(ObserverKind.LOAD)
   }
 
   override fun reload() {
-    super.reload()
     settings = format.decodeFromByteArray(serial, file.readBytes())
+    observe(ObserverKind.RELOAD)
   }
 
   override fun save() {
-    super.save()
     file.writeBytes(format.encodeToByteArray(serial, settings))
+    observe(ObserverKind.SAVE)
   }
 
   override fun saveModel() {
-    super.saveModel()
     file.writeBytes(format.encodeToByteArray(serial, model))
+    observe(ObserverKind.SAVE_MODEL)
   }
 }

@@ -33,17 +33,42 @@ import kotlinx.serialization.modules.plus
 import java.io.File
 
 /**
- * Reads all content in the file.
+ * Converts this file to a yaml string serial file.
  */
-inline val SerialFile<*>.content get() = file.readText()
+inline fun <reified T : Any> File.asYaml() = yaml(this, T::class)
+
+/**
+ * Converts this file to a yaml string serial file.
+ */
+inline fun <reified T : Any> File.asJson() = json(this, T::class)
+
+/**
+ * Converts this file to a yaml string serial file.
+ */
+inline fun <reified T : Any> File.asProtobuf() = protobuf(this, T::class)
+
+/**
+ * Converts this file to a yaml string serial file.
+ */
+inline fun <reified T : Any> File.asNBT() = nbt(this, T::class)
+
+/**
+ * Reads all content as string in the file.
+ */
+inline val SerialFile<*>.textContent get() = file.readText()
+
+/**
+ * Reads all content as byte array in the file.
+ */
+inline val SerialFile<*>.byteContent get() = file.readBytes()
 
 /**
  * Sets the new serial file by
  * the gived file. Also loads then.
  */
-fun <T : SerialFile<*>> T.transformFile(file: File) = apply {
+fun <T : SerialFile<*>> T.transformFile(file: File, load: Boolean = false) = apply {
   this.file = file
-  load()
+  if (load) load()
 }
 
 /**
@@ -98,6 +123,13 @@ fun YamlFile<*>.defaultFormat() = apply {
  */
 fun ProtocolBufferFile<*>.defaultFormat() = apply {
   format = DefaultProtocolBufferStrategyFormat
+}
+
+/**
+ * Sets the default format for this named binary tag File.
+ */
+fun NamedBinaryTagFile<*>.defaultFormat() = apply {
+  format = DefaultNamedBinaryTagStrategyFormat
 }
 
 /**

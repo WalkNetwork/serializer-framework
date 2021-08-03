@@ -74,10 +74,24 @@ class YamlFile<T : Any>(
 ) : StringSerialFile<T> {
   override var settings: T = model
   override var observers: Observers = Observers()
+}
 
+/**
+ * Represents a string folder compost only with yaml serial files.
+ * All yaml files loaded by the folder is compost of the model [T].
+ */
+class YamlFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, model) {
   init {
-    load()
+    implementsAll()
   }
+
+  override fun implement(file: String, model: T) {
+    implement(yaml(File(folder, "$file.yaml"), model))
+  }
+
+  override fun search() = folder
+    .listFiles { file -> file.extension == "yaml" || file.extension == "yml" }!!
+    .map { file -> yaml(file, model).also { it.load() } }
 }
 
 /**

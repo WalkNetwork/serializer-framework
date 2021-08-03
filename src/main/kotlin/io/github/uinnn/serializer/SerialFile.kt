@@ -71,32 +71,24 @@ interface SerialFile<T : Any> : Observable {
    * Loads for the first time
    * this serial file.
    */
-  fun load() {
-    observe(ObserverKind.LOAD)
-  }
+  fun load()
 
   /**
    * Reloads the current file
    * and updates the [settings] property.
    */
-  fun reload() {
-    observe(ObserverKind.RELOAD)
-  }
+  fun reload()
 
   /**
    * Saves the model of this
    * serial file.
    */
-  fun saveModel() {
-    observe(ObserverKind.SAVE_MODEL)
-  }
+  fun saveModel()
 
   /**
    * Saves the [settings] to the file.
    */
-  fun save() {
-    observe(ObserverKind.SAVE)
-  }
+  fun save()
 
   /**
    * Creates the file if not exists.

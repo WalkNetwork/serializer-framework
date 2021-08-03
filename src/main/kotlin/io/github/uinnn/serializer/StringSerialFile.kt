@@ -32,23 +32,23 @@ interface StringSerialFile<T : Any> : SerialFile<T> {
   override var format: AlterableStringFormat
 
   override fun load() {
-    super.load()
     createFile()
     reload()
+    observe(ObserverKind.LOAD)
   }
 
   override fun reload() {
-    super.reload()
     settings = format.decodeFromString(serial, file.readText())
+    observe(ObserverKind.RELOAD)
   }
 
   override fun saveModel() {
-    super.saveModel()
     file.writeText(format.encodeToString(serial, model))
+    observe(ObserverKind.SAVE_MODEL)
   }
 
   override fun save() {
-    super.save()
     file.writeText(format.encodeToString(serial, settings))
+    observe(ObserverKind.SAVE)
   }
 }

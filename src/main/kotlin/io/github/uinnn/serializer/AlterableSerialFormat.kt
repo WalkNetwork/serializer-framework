@@ -27,6 +27,9 @@ package io.github.uinnn.serializer
 import io.github.uinnn.serializer.common.FrameworkModule
 import kotlinx.serialization.*
 import kotlinx.serialization.modules.SerializersModule
+import net.benwoodworth.knbt.Nbt
+import net.benwoodworth.knbt.decodeFrom
+import net.benwoodworth.knbt.encodeTo
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -104,6 +107,27 @@ abstract class AbstractAlterableBinaryFormat(
 
   override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
     return model.encodeToByteArray(serializer, value)
+  }
+}
+
+/**
+ * A abstract implementation of [AlterableStreamFormat].
+ * Thats holds a [] model to decode/encode byte arrays.
+ */
+class NamedBinaryTagFormat(
+  override var serializersModule: SerializersModule,
+  var model: Nbt
+) : AlterableStreamFormat {
+  override fun <T> decodeFrom(input: InputStream, deserializer: DeserializationStrategy<T>): T {
+    return input.use {
+      model.decodeFrom(it, deserializer)
+    }
+  }
+
+  override fun <T> encodeTo(output: OutputStream, serializer: SerializationStrategy<T>, value: T) {
+    output.use {
+      model.encodeTo(it, serializer, value)
+    }
   }
 }
 
