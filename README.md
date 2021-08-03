@@ -100,7 +100,9 @@ config.clear()
 Getting the raw content of the serial file:
 
 ```kotlin
-config.content
+config.textContent
+// or
+config.byteContent
 ```
 
 Transforming to another file location:
