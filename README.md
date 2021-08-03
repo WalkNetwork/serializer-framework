@@ -2,10 +2,10 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=author&message=uinnn&color=informational"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.5.2v&color=ff69b4"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.6.2v&color=ff69b4"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.5.2&color=orange"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.6.2&color=orange"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
@@ -263,12 +263,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.5.2")
+implementation("io.github.uinnn:serializer-framework:1.6.2")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.5.2'
+implementation 'io.github.uinnn:serializer-framework:1.6.2'
 ```
 
 ### Maven
@@ -277,7 +277,7 @@ implementation 'io.github.uinnn:serializer-framework:1.5.2'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.5.2</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 
