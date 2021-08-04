@@ -25,6 +25,8 @@ SOFTWARE.
 package io.github.uinnn.serializer
 
 import io.github.uinnn.serializer.common.FrameworkModule
+import io.github.uinnn.serializer.common.Observers
+import io.github.uinnn.serializer.common.loadAndReturns
 import io.github.uinnn.serializer.formatter.StrategyStreamFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
@@ -88,12 +90,12 @@ class NamedBinaryTagFolder<T : Any>(folder: File, model: T) : StreamFolder<T>(fo
   }
 
   override fun implement(file: String, model: T) {
-    implement(nbt(File(folder, "$file.dat"), model))
+    implement(createNBTFile(File(folder, "$file.dat"), model))
   }
 
   override fun search() = folder
     .listFiles { file -> file.extension == "dat" }!!
-    .map { file -> nbt(file, model).also { it.load() } }
+    .map { file -> createNBTFile(file, model).loadAndReturns() }
 }
 
 /**
@@ -103,7 +105,7 @@ class NamedBinaryTagFolder<T : Any>(folder: File, model: T) : StreamFolder<T>(fo
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> nbt(
+fun <T : Any> createNBTFile(
   file: File,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -119,7 +121,7 @@ fun <T : Any> nbt(
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> Plugin.nbt(
+fun <T : Any> Plugin.createNBTFile(
   file: String,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -150,7 +152,7 @@ fun <T : Any> Plugin.nbt(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> nbt(
+fun <T : Any> createNBTFile(
   file: File,
   model: KClass<T>,
   format: AlterableStreamFormat = DefaultNamedBinaryTagStrategyFormat
@@ -183,7 +185,7 @@ fun <T : Any> nbt(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> Plugin.nbt(
+fun <T : Any> Plugin.createNBTFile(
   file: String,
   model: KClass<T>,
   format: AlterableStreamFormat = DefaultNamedBinaryTagStrategyFormat

@@ -25,6 +25,8 @@ SOFTWARE.
 package io.github.uinnn.serializer
 
 import io.github.uinnn.serializer.common.FrameworkModule
+import io.github.uinnn.serializer.common.Observers
+import io.github.uinnn.serializer.common.loadAndReturns
 import io.github.uinnn.serializer.formatter.StrategyBinaryFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
@@ -84,12 +86,12 @@ class ProtocolBufferFolder<T : Any>(folder: File, model: T) : BinaryFolder<T>(fo
   }
 
   override fun implement(file: String, model: T) {
-    implement(protobuf(File(folder, "$file.proto"), model))
+    implement(createProtobufFile(File(folder, "$file.proto"), model))
   }
 
   override fun search() = folder
     .listFiles { file -> file.extension == "proto" }!!
-    .map { file -> protobuf(file, model).also { it.load() } }
+    .map { file -> createProtobufFile(file, model).loadAndReturns() }
 }
 
 /**
@@ -99,7 +101,7 @@ class ProtocolBufferFolder<T : Any>(folder: File, model: T) : BinaryFolder<T>(fo
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> protobuf(
+fun <T : Any> createProtobufFile(
   file: File,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -115,7 +117,7 @@ fun <T : Any> protobuf(
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> Plugin.protobuf(
+fun <T : Any> Plugin.createProtobufFile(
   file: String,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -146,7 +148,7 @@ fun <T : Any> Plugin.protobuf(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> protobuf(
+fun <T : Any> createProtobufFile(
   file: File,
   model: KClass<T>,
   format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat
@@ -179,7 +181,7 @@ fun <T : Any> protobuf(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> Plugin.protobuf(
+fun <T : Any> Plugin.createProtobufFile(
   file: String,
   model: KClass<T>,
   format: AlterableBinaryFormat = DefaultProtocolBufferStrategyFormat

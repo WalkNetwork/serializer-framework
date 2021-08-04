@@ -33,24 +33,51 @@ import kotlinx.serialization.modules.plus
 import java.io.File
 
 /**
- * Converts this file to a yaml string serial file.
+ * Converts this file to a yaml serial file.
  */
-inline fun <reified T : Any> File.asYaml() = yaml(this, T::class)
+inline fun <reified T : Any> File.asYaml() = createYamlFile(this, T::class)
 
 /**
- * Converts this file to a yaml string serial file.
+ * Converts this file to a json serial file.
  */
-inline fun <reified T : Any> File.asJson() = json(this, T::class)
+inline fun <reified T : Any> File.asJson() = createJsonFile(this, T::class)
 
 /**
- * Converts this file to a yaml string serial file.
+ * Converts this file to a protobuf serial file.
  */
-inline fun <reified T : Any> File.asProtobuf() = protobuf(this, T::class)
+inline fun <reified T : Any> File.asProtobuf() = createProtobufFile(this, T::class)
 
 /**
- * Converts this file to a yaml string serial file.
+ * Converts this file to a nbt serial file.
  */
-inline fun <reified T : Any> File.asNBT() = nbt(this, T::class)
+inline fun <reified T : Any> File.asNBT() = createNBTFile(this, T::class)
+
+/**
+ * Converts this file to a yaml folder.
+ */
+inline fun <reified T : Any> File.asYamlFolder() = FolderFactory.createYamlFolder(this, T::class)
+
+/**
+ * Converts this file to a json folder.
+ */
+inline fun <reified T : Any> File.asJsonFolder() = FolderFactory.createJsonFolder(this, T::class)
+
+/**
+ * Converts this file to a protobuf folder.
+ */
+inline fun <reified T : Any> File.asProtobufFolder() = FolderFactory.createProtobufFolder(this, T::class)
+
+/**
+ * Converts this file to a NBT folder.
+ */
+inline fun <reified T : Any> File.asNBTFolder() = FolderFactory.createNBTFolder(this, T::class)
+
+/**
+ * Loads this serial file and returns itself.
+ */
+fun <T : SerialFile<*>> T.loadAndReturns(): T = apply {
+  load()
+}
 
 /**
  * Reads all content as string in the file.

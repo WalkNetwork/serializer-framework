@@ -28,6 +28,8 @@ import com.charleskorn.kaml.PolymorphismStyle
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
 import io.github.uinnn.serializer.common.FrameworkModule
+import io.github.uinnn.serializer.common.Observers
+import io.github.uinnn.serializer.common.loadAndReturns
 import io.github.uinnn.serializer.formatter.StrategyStringFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
@@ -86,12 +88,12 @@ class YamlFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, mode
   }
 
   override fun implement(file: String, model: T) {
-    implement(yaml(File(folder, "$file.yaml"), model))
+    implement(createYamlFile(File(folder, "$file.yaml"), model))
   }
 
   override fun search() = folder
     .listFiles { file -> file.extension == "yaml" || file.extension == "yml" }!!
-    .map { file -> yaml(file, model).also { it.load() } }
+    .map { file -> createYamlFile(file, model).loadAndReturns() }
 }
 
 /**
@@ -101,7 +103,7 @@ class YamlFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, mode
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> yaml(
+fun <T : Any> createYamlFile(
   file: File,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -117,7 +119,7 @@ fun <T : Any> yaml(
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> Plugin.yaml(
+fun <T : Any> Plugin.createYamlFile(
   file: String,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -148,7 +150,7 @@ fun <T : Any> Plugin.yaml(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> yaml(
+fun <T : Any> createYamlFile(
   file: File,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultYamlStrategyFormat
@@ -181,7 +183,7 @@ fun <T : Any> yaml(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> Plugin.yaml(
+fun <T : Any> Plugin.createYamlFile(
   file: String,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultYamlStrategyFormat

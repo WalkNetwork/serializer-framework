@@ -24,6 +24,8 @@ SOFTWARE.
 
 package io.github.uinnn.serializer
 
+import io.github.uinnn.serializer.common.Observable
+import io.github.uinnn.serializer.common.ObserverKind
 import kotlinx.serialization.KSerializer
 import java.io.File
 
@@ -106,5 +108,93 @@ interface SerialFile<T : Any> : Observable {
     observers[kind]?.forEach { action ->
       action(this)
     }
+  }
+}
+
+/**
+ * A StringSerialFile is a [SerialFile] for String format
+ * files, such as JSON and YAML.
+ */
+interface StringSerialFile<T : Any> : SerialFile<T> {
+  override var format: AlterableStringFormat
+
+  override fun load() {
+    createFile()
+    reload()
+    observe(ObserverKind.LOAD)
+  }
+
+  override fun reload() {
+    settings = format.decodeFromString(serial, file.readText())
+    observe(ObserverKind.RELOAD)
+  }
+
+  override fun saveModel() {
+    file.writeText(format.encodeToString(serial, model))
+    observe(ObserverKind.SAVE_MODEL)
+  }
+
+  override fun save() {
+    file.writeText(format.encodeToString(serial, settings))
+    observe(ObserverKind.SAVE)
+  }
+}
+
+/**
+ * A BinarySerialFile is a [SerialFile] for Binary format
+ * files, such as Protocol Buffers.
+ */
+interface BinarySerialFile<T : Any> : SerialFile<T> {
+  override var format: AlterableBinaryFormat
+
+  override fun load() {
+    createFile()
+    reload()
+    observe(ObserverKind.LOAD)
+  }
+
+  override fun reload() {
+    settings = format.decodeFromByteArray(serial, file.readBytes())
+    observe(ObserverKind.RELOAD)
+  }
+
+  override fun save() {
+    file.writeBytes(format.encodeToByteArray(serial, settings))
+    observe(ObserverKind.SAVE)
+  }
+
+  override fun saveModel() {
+    file.writeBytes(format.encodeToByteArray(serial, model))
+    observe(ObserverKind.SAVE_MODEL)
+  }
+}
+
+/**
+ * A StreamSerialFile is a [SerialFile] for uses with serialization
+ * libraries that implements the function for encoding and decoding
+ * by a output/input stream, such as Named Binary Tag (NBT) files.
+ */
+interface StreamSerialFile<T : Any> : SerialFile<T> {
+  override val format: AlterableStreamFormat
+
+  override fun load() {
+    createFile()
+    reload()
+    observe(ObserverKind.LOAD)
+  }
+
+  override fun reload() {
+    settings = format.decodeFrom(file.inputStream().buffered(), serial)
+    observe(ObserverKind.RELOAD)
+  }
+
+  override fun save() {
+    format.encodeTo(file.outputStream().buffered(), serial, settings)
+    observe(ObserverKind.SAVE)
+  }
+
+  override fun saveModel() {
+    format.encodeTo(file.outputStream().buffered(), serial, model)
+    observe(ObserverKind.SAVE_MODEL)
   }
 }

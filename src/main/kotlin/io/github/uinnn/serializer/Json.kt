@@ -25,6 +25,8 @@ SOFTWARE.
 package io.github.uinnn.serializer
 
 import io.github.uinnn.serializer.common.FrameworkModule
+import io.github.uinnn.serializer.common.Observers
+import io.github.uinnn.serializer.common.loadAndReturns
 import io.github.uinnn.serializer.formatter.StrategyStringFormatter
 import io.github.uinnn.serializer.strategy.ColorStrategy
 import kotlinx.serialization.KSerializer
@@ -107,10 +109,6 @@ class JsonFile<T : Any>(
 ) : StringSerialFile<T> {
   override var settings: T = model
   override var observers: Observers = Observers()
-
-  init {
-    load()
-  }
 }
 
 /**
@@ -123,12 +121,12 @@ class JsonFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, mode
   }
 
   override fun implement(file: String, model: T) {
-    implement(json(File(folder, "$file.json"), model))
+    implement(createJsonFile(File(folder, "$file.json"), model))
   }
 
   override fun search() = folder
     .listFiles { file -> file.extension == "json" }!!
-    .map { file -> json(file, model).also { it.load() } }
+    .map { file -> createJsonFile(file, model).loadAndReturns() }
 }
 
 /**
@@ -138,7 +136,7 @@ class JsonFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder, mode
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> json(
+fun <T : Any> createJsonFile(
   file: File,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -154,7 +152,7 @@ fun <T : Any> json(
  * backend strategy, thats replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
-fun <T : Any> Plugin.json(
+fun <T : Any> Plugin.createJsonFile(
   file: String,
   model: T,
   serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
@@ -185,7 +183,7 @@ fun <T : Any> Plugin.json(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> json(
+fun <T : Any> createJsonFile(
   file: File,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
@@ -218,7 +216,7 @@ fun <T : Any> json(
  * data class Settings(var name: String = "uinnn") // works!
  * ```
  */
-fun <T : Any> Plugin.json(
+fun <T : Any> Plugin.createJsonFile(
   file: String,
   model: KClass<T>,
   format: AlterableStringFormat = DefaultJsonStrategyFormat
