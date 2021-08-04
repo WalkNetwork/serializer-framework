@@ -112,7 +112,7 @@ abstract class AbstractAlterableBinaryFormat(
 
 /**
  * A abstract implementation of [AlterableStreamFormat].
- * Thats holds a [] model to decode/encode byte arrays.
+ * Thats holds a [Nbt] model to decode/encode byte arrays.
  */
 class NamedBinaryTagFormat(
   override var serializersModule: SerializersModule,
