@@ -2,10 +2,10 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=author&message=uinnn&color=informational"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.5.2v&color=ff69b4"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.6.2v&color=ff69b4"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.5.2&color=orange"/>
+  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.6.2&color=orange"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
@@ -28,9 +28,18 @@ always having to translate color codes like '&' to '§' and vice- versa. With `s
 * Protocol Buffers ✔️
 * Minecraft NBT (.dat) ✔️
 
+---
+
+### 1.6.2v Patch notes
+* Added support to serial folders. (multiple serial files in one folder)
+* More useful functions added.
+
+
 ### 1.5.2v Patch notes
 * Now binary serial files encode/decode from byte arrays instead of hex string.
 * Binary serial file size encoding decreased ~50%
+
+---
 
 ### How To Use
 #### You can see the dokka documentation [here](https://uinnn.github.io/serializer-framework/)
@@ -48,29 +57,19 @@ Now let's suppose you want to transfer the class to a file:
 
 ```kotlin
 // by yaml
-val yamlConfig by lazy {
-  yaml(file, Settings())
-}
+val yamlConfig = yaml(file, Settings())
 
 // by json
-val jsonConfig by lazy {
-  json(file, Settings())
-}
+val jsonConfig = json(file, Settings())
 
 // by protobuf
-val protobufConfig by lazy {
-  protobuf(file, Settings())
-}
+val protobufConfig = protobuf(file, Settings())
 
 // by named binary tag (nbt, also .dat files)
-val nbtConfig by lazy { 
-  nbt(file, Settings())
-}
+val nbtConfig = nbt(file, Settings())
 
 // with plugin (adds in the datafolder of the plugin)
-val pluginConfig by lazy { 
-  plugin.yaml("settings" /* already add a .yaml extension */, Settings())
-}
+val pluginConfig = plugin.yaml("settings" /* already add a .yaml extension */, Settings())
 ```
 
 Getting the settings model class:
@@ -101,7 +100,9 @@ config.clear()
 Getting the raw content of the serial file:
 
 ```kotlin
-config.content
+config.textContent
+// or
+config.byteContent
 ```
 
 Transforming to another file location:
@@ -230,18 +231,46 @@ config.format.decoder = ReverseBooleanStrategy
 ```
 And ready! You already applied your own custom strategy!
 
+### Serial Folders
+Serial folder is a folder where you can store several serial files of one type, such as YAML files.
+Serial folders support all serial file types supported by `serializer-framework`
+
+```kt
+// the directory 'customdata' in parent 'world' will be the serial folder
+val folder = Folders.nbt(File("world", "customdata"), Settings())
+```
+Adding a new serial file to this folder:
+```kt
+folder.implement("uinnn-data", Settings(name = "uinnn"))
+// equals to 
+folder.implement(nbt(File(folder, "uinnn-data"), Settings(name = "uinnn")))
+```
+A serial folder extends a LinkedList so you can get the serial files easily!
+```kt
+val first = folder.first
+val second = folder[1]
+val last = folder.last
+```
+Supports too saving, loading, saving model and reloading all files:
+```kt
+folder.loadAll()
+folder.saveAll()
+folder.reloadAll()
+folder.saveAllModel()
+```
+
 ## Setup for development
 The `serializer-framework` is in the central maven repository. Thus making things very easy!
 
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.5.2")
+implementation("io.github.uinnn:serializer-framework:1.6.2")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.5.2'
+implementation 'io.github.uinnn:serializer-framework:1.6.2'
 ```
 
 ### Maven
@@ -250,7 +279,7 @@ implementation 'io.github.uinnn:serializer-framework:1.5.2'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.5.2</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 
