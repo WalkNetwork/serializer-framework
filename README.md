@@ -2,10 +2,10 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=author&message=uinnn&color=informational"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.6.3v&color=ff69b4"/>
+  <img align="center" src="https://img.shields.io/github/v/release/uinnn/serializer-framework?color=yellow&label=serializer-framework&style=for-the-badge"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.6.3&color=orange"/>
+  <img align="center" src="https://img.shields.io/github/v/release/uinnn/serializer-framework?color=ff69b4&label=maven-central&style=for-the-badge"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
