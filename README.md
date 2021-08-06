@@ -265,12 +265,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.6.4")
+implementation("io.github.uinnn:serializer-framework:1.6.5")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.6.4'
+implementation 'io.github.uinnn:serializer-framework:1.6.5'
 ```
 
 ### Maven
@@ -279,7 +279,7 @@ implementation 'io.github.uinnn:serializer-framework:1.6.4'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.6.4</version>
+  <version>1.6.5</version>
 </dependency>
 ```
 
