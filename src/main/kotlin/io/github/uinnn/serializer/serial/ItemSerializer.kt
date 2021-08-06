@@ -24,14 +24,23 @@ SOFTWARE.
 
 package io.github.uinnn.serializer.serial
 
-import kotlinx.serialization.KSerializer
+import io.github.uinnn.serializer.common.Serializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
-import kotlinx.serialization.encoding.*
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import org.bukkit.material.MaterialData
+import org.bukkit.util.io.BukkitObjectInputStream
+import org.bukkit.util.io.BukkitObjectOutputStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 /**
  * A serializer for ItemStack.
@@ -48,7 +57,7 @@ import org.bukkit.material.MaterialData
  *     - "DURABILITY(1)"
  * ```
  */
-object ItemStackSerializer : KSerializer<ItemStack> {
+object ItemSerializer : Serializer<ItemStack> {
   override val descriptor = buildClassSerialDescriptor("ItemStack") {
     element<String>("name")
     element("material", MaterialDataSerializer.descriptor)
@@ -59,24 +68,12 @@ object ItemStackSerializer : KSerializer<ItemStack> {
   }
 
   override fun deserialize(decoder: Decoder): ItemStack = decoder.decodeStructure(descriptor) {
-    lateinit var name: String
-    lateinit var material: MaterialData
-    lateinit var lore: List<String>
-    var amount = 1
-    var glow = false
-    var enchantments: Map<Enchantment, Int> = HashMap()
-    while (true) {
-      when (val index = decodeElementIndex(descriptor)) {
-        0 -> name = decodeStringElement(descriptor, index)
-        1 -> material = decodeSerializableElement(descriptor, index, MaterialDataSerializer)
-        2 -> lore = decodeSerializableElement(descriptor, index, StringListSerializer)
-        3 -> amount = decodeIntElement(descriptor, index)
-        4 -> glow = decodeBooleanElement(descriptor, index)
-        5 -> enchantments = decodeSerializableElement(descriptor, index, EnchantmentSerializer)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> break
-      }
-    }
+    val name = decodeStringElement(descriptor, decodeElementIndex(descriptor))
+    val material = decodeSerializableElement(descriptor, decodeElementIndex(descriptor), MaterialDataSerializer)
+    val lore = decodeSerializableElement(descriptor, decodeElementIndex(descriptor), StringListSerializer)
+    val amount = decodeIntElement(descriptor, decodeElementIndex(descriptor))
+    val glow = decodeBooleanElement(descriptor, decodeElementIndex(descriptor))
+    val enchantments = decodeSerializableElement(descriptor, decodeElementIndex(descriptor), EnchantmentSerializer)
     material.toItemStack(amount).apply {
       val meta = itemMeta
       meta.displayName = name
@@ -91,12 +88,38 @@ object ItemStackSerializer : KSerializer<ItemStack> {
   }
 
   override fun serialize(encoder: Encoder, value: ItemStack) = encoder.encodeStructure(descriptor) {
-    encodeStringElement(descriptor, 0, value.itemMeta.displayName)
+    val meta = value.itemMeta
+    encodeStringElement(descriptor, 0, value.itemMeta.displayName ?: "")
     encodeSerializableElement(descriptor, 1, MaterialDataSerializer, value.data)
     encodeIntElement(descriptor, 3, value.amount)
     encodeBooleanElement(descriptor, 4, false)
-    encodeSerializableElement(descriptor, 2, StringListSerializer, value.itemMeta.lore)
+    encodeSerializableElement(descriptor, 2, StringListSerializer, value.itemMeta.lore ?: listOf())
     if (value.enchantments.isNotEmpty())
       encodeSerializableElement(descriptor, 5, EnchantmentSerializer, value.enchantments)
+  }
+}
+
+/**
+ * A item stack binary serializer. This is for use in databases.
+ */
+object BinaryItemSerializer : Serializer<ItemStack> {
+  override val descriptor = PrimitiveSerialDescriptor("BinaryItemStack", PrimitiveKind.STRING)
+
+  override fun deserialize(decoder: Decoder): ItemStack {
+    val value = decoder.decodeString()
+    return ByteArrayInputStream(Base64.getDecoder().decode(value)).use {
+      BukkitObjectInputStream(it).use { data ->
+        data.readObject() as ItemStack
+      }
+    }
+  }
+
+  override fun serialize(encoder: Encoder, value: ItemStack) {
+    ByteArrayOutputStream().use {
+      BukkitObjectOutputStream(it).use { data ->
+        data.writeObject(value)
+        encoder.encodeString(Base64.getEncoder().encodeToString(it.toByteArray()))
+      }
+    }
   }
 }

@@ -24,7 +24,7 @@ SOFTWARE.
 
 package io.github.uinnn.serializer.serial
 
-import kotlinx.serialization.KSerializer
+import io.github.uinnn.serializer.common.Serializer
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.*
 import org.bukkit.enchantments.Enchantment
@@ -38,7 +38,7 @@ import org.bukkit.enchantments.Enchantment
  *   - LOOT_BONUS_BLOCKS(25)
  * ```
  */
-object EnchantmentSerializer : KSerializer<Map<Enchantment, Int>> {
+object EnchantmentSerializer : Serializer<Map<Enchantment, Int>> {
   override val descriptor = listSerialDescriptor<String>()
 
   override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {

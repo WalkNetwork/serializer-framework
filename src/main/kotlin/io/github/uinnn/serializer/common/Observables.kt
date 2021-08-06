@@ -22,36 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package io.github.uinnn.serializer.serial
-
-import io.github.uinnn.serializer.common.Serializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import org.bukkit.Bukkit
-import org.bukkit.Location
+package io.github.uinnn.serializer.common
 
 /**
- * A serializer for Location.
- * This will serialize something like this (IN YAML)
- * ```yaml
- * location: "world|5|66|0"
- * ```
+ * Shortcut for adding a observer event
+ * handler for saving a serial file.
  */
-object LocationSerializer : Serializer<Location> {
-  override val descriptor = PrimitiveSerialDescriptor("Location", PrimitiveKind.STRING)
-  override fun deserialize(decoder: Decoder): Location {
-    val split = decoder.decodeString().split('|')
-    return Location(
-      Bukkit.getWorld(split[0]),
-      split[1].toDouble(),
-      split[2].toDouble(),
-      split[3].toDouble()
-    )
-  }
+fun Observable.onSave(action: ObserverAction) = onObserve(ObserverKind.SAVE, action)
 
-  override fun serialize(encoder: Encoder, value: Location) {
-    encoder.encodeString("${value.world.name}|${value.blockX}|${value.blockY}|${value.blockZ}")
-  }
-}
+/**
+ * Shortcut for adding a observer event
+ * handler for loading a serial file.
+ */
+fun Observable.onLoad(action: ObserverAction) = onObserve(ObserverKind.LOAD, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for reloading a serial file.
+ */
+fun Observable.onReload(action: ObserverAction) = onObserve(ObserverKind.RELOAD, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for saving model of a serial file.
+ */
+fun Observable.onSaveModel(action: ObserverAction) = onObserve(ObserverKind.SAVE_MODEL, action)
+
+/**
+ * Shortcut for adding a observer event
+ * handler for creating a serial file.
+ */
+fun Observable.onCreate(action: ObserverAction) = onObserve(ObserverKind.CREATE, action)

@@ -22,36 +22,50 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package io.github.uinnn.serializer.serial
+package io.github.uinnn.serializer.common
 
-import io.github.uinnn.serializer.common.Serializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import org.bukkit.Bukkit
-import org.bukkit.Location
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
+
+typealias Serializer<T> = KSerializer<T>
 
 /**
- * A serializer for Location.
- * This will serialize something like this (IN YAML)
- * ```yaml
- * location: "world|5|66|0"
- * ```
+ * Encodes a string list in this composite encoder.
  */
-object LocationSerializer : Serializer<Location> {
-  override val descriptor = PrimitiveSerialDescriptor("Location", PrimitiveKind.STRING)
-  override fun deserialize(decoder: Decoder): Location {
-    val split = decoder.decodeString().split('|')
-    return Location(
-      Bukkit.getWorld(split[0]),
-      split[1].toDouble(),
-      split[2].toDouble(),
-      split[3].toDouble()
-    )
-  }
-
-  override fun serialize(encoder: Encoder, value: Location) {
-    encoder.encodeString("${value.world.name}|${value.blockX}|${value.blockY}|${value.blockZ}")
+fun CompositeEncoder.encodeStringList(descriptor: SerialDescriptor, value: List<String>) {
+  for ((index, str) in value.withIndex()) {
+    encodeStringElement(descriptor, index, str)
   }
 }
+
+/**
+ * Decodes a string list in this composite encoder.
+ */
+fun CompositeDecoder.decodeStringList(descriptor: SerialDescriptor): ArrayList<String> {
+  val list = ArrayList<String>()
+  while (true) {
+    when (val index = decodeElementIndex(descriptor)) {
+      CompositeDecoder.DECODE_DONE -> break
+      else -> list.add(decodeStringElement(descriptor, index))
+    }
+  }
+  return list
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

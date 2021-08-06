@@ -24,7 +24,7 @@ SOFTWARE.
 
 package io.github.uinnn.serializer.serial
 
-import kotlinx.serialization.KSerializer
+import io.github.uinnn.serializer.common.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -40,7 +40,7 @@ import org.bukkit.material.MaterialData
  * material: "1:0"
  * ```
  */
-object MaterialDataSerializer : KSerializer<MaterialData> {
+object MaterialDataSerializer : Serializer<MaterialData> {
   override val descriptor = PrimitiveSerialDescriptor("MaterialData", PrimitiveKind.STRING)
 
   override fun deserialize(decoder: Decoder): MaterialData = runCatching {

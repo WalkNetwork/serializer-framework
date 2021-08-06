@@ -33,46 +33,6 @@ import kotlinx.serialization.modules.plus
 import java.io.File
 
 /**
- * Converts this file to a yaml serial file.
- */
-inline fun <reified T : Any> File.asYaml() = createYamlFile(this, T::class)
-
-/**
- * Converts this file to a json serial file.
- */
-inline fun <reified T : Any> File.asJson() = createJsonFile(this, T::class)
-
-/**
- * Converts this file to a protobuf serial file.
- */
-inline fun <reified T : Any> File.asProtobuf() = createProtobufFile(this, T::class)
-
-/**
- * Converts this file to a nbt serial file.
- */
-inline fun <reified T : Any> File.asNBT() = createNBTFile(this, T::class)
-
-/**
- * Converts this file to a yaml folder.
- */
-inline fun <reified T : Any> File.asYamlFolder() = FolderFactory.createYamlFolder(this, T::class)
-
-/**
- * Converts this file to a json folder.
- */
-inline fun <reified T : Any> File.asJsonFolder() = FolderFactory.createJsonFolder(this, T::class)
-
-/**
- * Converts this file to a protobuf folder.
- */
-inline fun <reified T : Any> File.asProtobufFolder() = FolderFactory.createProtobufFolder(this, T::class)
-
-/**
- * Converts this file to a NBT folder.
- */
-inline fun <reified T : Any> File.asNBTFolder() = FolderFactory.createNBTFolder(this, T::class)
-
-/**
  * Loads this serial file and returns itself.
  */
 fun <T : SerialFile<*>> T.loadAndReturns(): T = apply {
@@ -158,33 +118,3 @@ fun ProtocolBufferFile<*>.defaultFormat() = apply {
 fun NamedBinaryTagFile<*>.defaultFormat() = apply {
   format = DefaultNamedBinaryTagStrategyFormat
 }
-
-/**
- * Shortcut for adding a observer event
- * handler for saving a serial file.
- */
-fun Observable.onSave(action: ObserverAction) = onObserve(ObserverKind.SAVE, action)
-
-/**
- * Shortcut for adding a observer event
- * handler for loading a serial file.
- */
-fun Observable.onLoad(action: ObserverAction) = onObserve(ObserverKind.LOAD, action)
-
-/**
- * Shortcut for adding a observer event
- * handler for reloading a serial file.
- */
-fun Observable.onReload(action: ObserverAction) = onObserve(ObserverKind.RELOAD, action)
-
-/**
- * Shortcut for adding a observer event
- * handler for saving model of a serial file.
- */
-fun Observable.onSaveModel(action: ObserverAction) = onObserve(ObserverKind.SAVE_MODEL, action)
-
-/**
- * Shortcut for adding a observer event
- * handler for creating a serial file.
- */
-fun Observable.onCreate(action: ObserverAction) = onObserve(ObserverKind.CREATE, action)

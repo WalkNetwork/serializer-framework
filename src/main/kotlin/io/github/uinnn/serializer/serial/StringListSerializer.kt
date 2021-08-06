@@ -24,9 +24,14 @@ SOFTWARE.
 
 package io.github.uinnn.serializer.serial
 
-import kotlinx.serialization.KSerializer
+import io.github.uinnn.serializer.common.Serializer
+import io.github.uinnn.serializer.common.decodeStringList
+import io.github.uinnn.serializer.common.encodeStringList
 import kotlinx.serialization.descriptors.listSerialDescriptor
-import kotlinx.serialization.encoding.*
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
 /**
  * A serializer for String Lists. By default
@@ -34,21 +39,14 @@ import kotlinx.serialization.encoding.*
  * lists serializers. So this is just a "strategy" to
  * encode and decode color symbols, like '&' to '§' and vice-versa
  */
-object StringListSerializer : KSerializer<List<String>> {
+object StringListSerializer : Serializer<List<String>> {
   override val descriptor = listSerialDescriptor<String>()
 
   override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {
-    val list = arrayListOf<String>()
-    while (true) {
-      when (val index = decodeElementIndex(descriptor)) {
-        CompositeDecoder.DECODE_DONE -> break
-        else -> list.add(decodeStringElement(descriptor, index))
-      }
-    }
-    list
+    decodeStringList(descriptor)
   }
 
   override fun serialize(encoder: Encoder, value: List<String>) = encoder.encodeStructure(descriptor) {
-    for ((index, str) in value.withIndex()) encodeStringElement(descriptor, index, str.replace('§', '&'))
+    encodeStringList(descriptor, value.map { it.replace('§', '&') })
   }
 }

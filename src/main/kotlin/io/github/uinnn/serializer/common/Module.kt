@@ -43,7 +43,7 @@ import kotlinx.serialization.modules.contextual
 val FrameworkModule by lazy {
   SerializersModule {
     contextual(EnchantmentSerializer)
-    contextual(ItemStackSerializer)
+    contextual(ItemSerializer)
     contextual(LocationSerializer)
     contextual(MaterialDataSerializer)
     contextual(PlayerSerializer)

@@ -24,7 +24,7 @@ SOFTWARE.
 
 package io.github.uinnn.serializer.serial
 
-import kotlinx.serialization.KSerializer
+import io.github.uinnn.serializer.common.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -39,7 +39,7 @@ import org.bukkit.World
  * world: "world"
  * ```
  */
-object WorldSerializer : KSerializer<World> {
+object WorldSerializer : Serializer<World> {
   override val descriptor = PrimitiveSerialDescriptor("World", PrimitiveKind.STRING)
   override fun deserialize(decoder: Decoder): World = runCatching {
     Bukkit.getWorld(decoder.decodeString())
