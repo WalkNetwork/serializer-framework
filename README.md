@@ -143,7 +143,7 @@ config.observe(ObserverKind.LOAD)
 ### Module
 `serializer-framework` comes with a standard serialization module, which implements the following serializers:
 
-* ItemStack
+* ItemStack (normal and binary)
 * Enchantment
 * Location
 * MaterialData
@@ -265,12 +265,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.6.3")
+implementation("io.github.uinnn:serializer-framework:1.6.4")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.6.3'
+implementation 'io.github.uinnn:serializer-framework:1.6.4'
 ```
 
 ### Maven
@@ -279,7 +279,7 @@ implementation 'io.github.uinnn:serializer-framework:1.6.3'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.6.3</version>
+  <version>1.6.4</version>
 </dependency>
 ```
 
