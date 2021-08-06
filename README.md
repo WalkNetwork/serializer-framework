@@ -2,10 +2,10 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=author&message=uinnn&color=informational"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=version&message=1.6.2v&color=ff69b4"/>
+  <img align="center" src="https://img.shields.io/github/v/release/uinnn/serializer-framework?color=yellow&label=serializer-framework&style=for-the-badge"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
-  <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=maven-central&message=1.6.2&color=orange"/>
+  <img align="center" src="https://img.shields.io/github/v/release/uinnn/serializer-framework?color=ff69b4&label=maven-central&style=for-the-badge"/>
 </a>
 <a href="https://github.com/uinnn/serializer-framework">
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
@@ -57,19 +57,19 @@ Now let's suppose you want to transfer the class to a file:
 
 ```kotlin
 // by yaml
-val yamlConfig = yaml(file, Settings())
+val yamlConfig = createYamlFile(file, Settings())
 
 // by json
-val jsonConfig = json(file, Settings())
+val jsonConfig = createJsonFile(file, Settings())
 
 // by protobuf
-val protobufConfig = protobuf(file, Settings())
+val protobufConfig = createProtobufFile(file, Settings())
 
 // by named binary tag (nbt, also .dat files)
-val nbtConfig = nbt(file, Settings())
+val nbtConfig = createNBTFile(file, Settings())
 
 // with plugin (adds in the datafolder of the plugin)
-val pluginConfig = plugin.yaml("settings" /* already add a .yaml extension */, Settings())
+val pluginConfig = plugin.createYamlFile("settings" /* already add a .yaml extension */, Settings())
 ```
 
 Getting the settings model class:
@@ -221,7 +221,7 @@ val CustomYamlStrategyFormat by lazy {
 config.format = CustomYamlStrategyFormat
 
 // or when init:
-val config = yaml(file, Settings::class, CustomYamlStrategyFormat)
+val config = createYamlFile(file, Settings::class, CustomYamlStrategyFormat)
 ```
 
 2. Overwriting the old strategy:
@@ -237,13 +237,13 @@ Serial folders support all serial file types supported by `serializer-framework`
 
 ```kt
 // the directory 'customdata' in parent 'world' will be the serial folder
-val folder = Folders.nbt(File("world", "customdata"), Settings())
+val folder = FolderFactory.createNBTFolder(File("world", "customdata"), Settings())
 ```
 Adding a new serial file to this folder:
 ```kt
 folder.implement("uinnn-data", Settings(name = "uinnn"))
 // equals to 
-folder.implement(nbt(File(folder, "uinnn-data"), Settings(name = "uinnn")))
+folder.implement(createNBTFile(File(folder, "uinnn-data"), Settings(name = "uinnn")))
 ```
 A serial folder extends a LinkedList so you can get the serial files easily!
 ```kt
@@ -265,12 +265,12 @@ The `serializer-framework` is in the central maven repository. Thus making thing
 ### Gradle Kotlin DSL
 
 ```gradle
-implementation("io.github.uinnn:serializer-framework:1.6.2")
+implementation("io.github.uinnn:serializer-framework:1.6.3")
 ```
 
 ### Gradle
 ```gradle
-implementation 'io.github.uinnn:serializer-framework:1.6.2'
+implementation 'io.github.uinnn:serializer-framework:1.6.3'
 ```
 
 ### Maven
@@ -279,7 +279,7 @@ implementation 'io.github.uinnn:serializer-framework:1.6.2'
 <dependency>
   <groupId>io.github.uinnn</groupId>
   <artifactId>serializer-framework</artifactId>
-  <version>1.6.2</version>
+  <version>1.6.3</version>
 </dependency>
 ```
 
