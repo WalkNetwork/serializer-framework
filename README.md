@@ -11,6 +11,8 @@
   <img align="center" src="https://img.shields.io/static/v1?style=for-the-badge&label=license&message=MIT License&color=success"/>
 </a>
 
+# This documentation is outdated.
+
 # serializer-framework
 Is a lightweight kotlin serializer library to standalone or spigot use!
 
