@@ -92,6 +92,18 @@ FamilyConfig.load() // loads from file
 FamilyConfig.save() // save to file
 ```
 
+```kt
+val config = yml(file, Family()) {
+  onReload {
+    println("family config reloaded")
+  }
+}
+
+val family get() = config.data
+val familyMembers get() = family.members
+```
+
+
 
 
 
