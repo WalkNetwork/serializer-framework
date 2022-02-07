@@ -24,6 +24,8 @@ open class NbtCompoundTag : Tag(14) {
 		data.readCompound(value)
 	}
 	
+	fun copy(): NBTTagCompound = value.clone() as NBTTagCompound
+	
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is NbtCompoundTag && value == other.value
 	override fun hashCode(): Int = value.hashCode()

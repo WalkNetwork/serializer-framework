@@ -21,6 +21,10 @@ open class InventoryTag : Tag(19), Iterable<ItemStack> {
 		value = data.readInventory()
 	}
 	
+	fun copy() = inventory(value.title, value.size, value.holder).apply {
+		value.forEachIndexed { slot, item -> setItem(slot, item) }
+	}
+	
 	override fun toString(): String = value.toString()
 	override fun hashCode(): Int = value.hashCode()
 	override fun equals(other: Any?): Boolean = other is InventoryTag && value == other.value

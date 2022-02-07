@@ -24,18 +24,19 @@ SOFTWARE.
 
 package walkmc.serializer
 
+import walkmc.collections.*
 import walkmc.serializer.common.*
 import java.io.*
 import java.util.*
 
 /**
  * Represents a folder of serial lists. This is useful when you
- * have to stores more than one serial files in a folder.
+ * have to store more than one serial files in a folder.
  */
 abstract class Folder<K : Any, T : SerialFile<K>>(
 	var folder: File,
 	var model: K,
-) : LinkedList<T>() {
+) : IndexList<T>() {
 	init {
 		if (!folder.exists()) {
 			folder.mkdirs()
@@ -63,7 +64,7 @@ abstract class Folder<K : Any, T : SerialFile<K>>(
 	}
 	
 	/**
-	 * Implements all searcheds serial files inside of this serial folder.
+	 * Implements all searcheds serial files inside this serial folder.
 	 */
 	fun implementsAll() = addAll(search())
 	

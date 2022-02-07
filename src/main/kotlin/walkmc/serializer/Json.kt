@@ -26,13 +26,43 @@ package walkmc.serializer
 
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
+import kotlinx.serialization.modules.*
 import org.bukkit.plugin.*
+import walkmc.extensions.*
 import walkmc.serializer.common.*
 import walkmc.serializer.formatter.*
 import walkmc.serializer.strategy.*
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import java.io.*
+
+/**
+ * Creates a Json file with all provided params.
+ *
+ * This is a shortcut for non-creating any class/object for the config file.
+ */
+fun <T : Any> json(
+	file: File,
+	model: T,
+	serial: KSerializer<T> = model::class.serializer().cast(),
+	format: AlterableStringFormat = JsonStrategy,
+	callback: JsonFile<T>.() -> Unit = {}
+) = JsonFile(file, model, serial, format).apply(callback)
+
+/**
+ * Shortcut for creating a [Json] component.
+ */
+fun json(
+	module: SerializersModule = FrameworkModule,
+	prettyPrint: Boolean = true,
+	printIndent: String = "  ",
+	encodeDefaults: Boolean = true
+) = Json {
+	this.prettyPrint = prettyPrint
+	this.prettyPrintIndent = printIndent
+	this.encodeDefaults = encodeDefaults
+	this.serializersModule = module
+}
 
 /**
  * The default JSON format.
@@ -101,7 +131,7 @@ val JsonStrategySave by lazy {
 open class JsonFile<T : Any>(
 	override var file: File,
 	override var model: T,
-	override var serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
+	override var serial: KSerializer<T> = model::class.serializer().cast(),
 	override var format: AlterableStringFormat = JsonStrategy,
 ) : StringSerialFile<T> {
 	override var data: T = model
@@ -133,43 +163,43 @@ open class JsonFolder<T : Any>(folder: File, model: T) : StringFolder<T>(folder,
 /**
  * Constructs and loads a JSON file.
  * The default format for JSON files is [JsonStrategy],
- * thats contains a set of serializers and [ColorStrategy] as a
- * backend strategy, thats replaces all '§' to '&' and vice-versa
+ * that's contains a set of serializers and [ColorStrategy] as a
+ * backend strategy, that's replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
 fun <T : Any> createJsonFile(
 	file: File,
 	model: T,
-	serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
+	serial: KSerializer<T> = model::class.serializer().cast(),
 	format: AlterableStringFormat = JsonStrategy,
 ): StringSerialFile<T> = JsonFile(file, model, serial, format)
 
 /**
- * Constructs and loads a JSON file inside of the datafolder of this plugin.
- * This will inserts the [file] in the datafolder of
+ * Constructs and loads a JSON file inside the datafolder of this plugin.
+ * This will insert the [file] in the datafolder of
  * this plugin and with .json extension.
  * The default format for JSON files is [JsonStrategy],
- * thats contains a set of serializers and [ColorStrategy] as a
- * backend strategy, thats replaces all '§' to '&' and vice-versa
+ * that's contains a set of serializers and [ColorStrategy] as a
+ * backend strategy, that's replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  */
 fun <T : Any> Plugin.createJsonFile(
 	file: String,
 	model: T,
-	serial: KSerializer<T> = model::class.serializer() as KSerializer<T>,
+	serial: KSerializer<T> = model::class.serializer().cast(),
 	format: AlterableStringFormat = JsonStrategy,
 ): StringSerialFile<T> = JsonFile(File(dataFolder, "$file.json"), model, serial, format)
 
 /**
  * Constructs and loads a JSON file.
  * The default format for JSON files is [JsonStrategy],
- * thats contains a set of serializers and [ColorStrategy] as a
- * backend strategy, thats replaces all '§' to '&' and vice-versa
+ * that's contains a set of serializers and [ColorStrategy] as a
+ * backend strategy, that's replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  *
  * ### Note:
  * This need the [model] kclass with all default constructors
- * or will be throw a error, because this just create a instance
+ * or will be thrown an error, because this just create an instance
  * using Kotlin Reflect.
  *
  * Example:
@@ -191,18 +221,18 @@ fun <T : Any> createJsonFile(
 ): StringSerialFile<T> = JsonFile(file, model.createInstance(), model.serializer(), format)
 
 /**
- * Constructs and loads a JSON file inside of the datafolder of this plugin.
- * This will inserts the [file] in the datafolder of
+ * Constructs and loads a JSON file inside the datafolder of this plugin.
+ * This will insert the [file] in the datafolder of
  * this plugin and with .json extension.
  * The default format for JSON files is [JsonStrategy],
- * thats contains a set of serializers and [ColorStrategy] as a
- * backend strategy, thats replaces all '§' to '&' and vice-versa
+ * that's contains a set of serializers and [ColorStrategy] as a
+ * backend strategy, that's replaces all '§' to '&' and vice-versa
  * in strings and lists of strings!
  *
  *
  * ### Note:
  * This need the [model] kclass with all default constructors
- * or will be throw a error, because this just create a instance
+ * or will be thrown an error, because this just create an instance
  * using Kotlin Reflect.
  *
  * Example:

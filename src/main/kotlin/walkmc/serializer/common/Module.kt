@@ -24,8 +24,13 @@ SOFTWARE.
 
 package walkmc.serializer.common
 
+import kotlinx.serialization.*
 import kotlinx.serialization.modules.*
+import walkmc.serializer.*
 import walkmc.serializer.serial.*
+
+inline fun module(block: SerializersModuleBuilder.() -> Unit) = SerializersModule(block)
+inline fun <reified T : Any> module(serializer: KSerializer<T>) = serializersModuleOf(serializer)
 
 /**
  * The default `serializer-framework` module.
@@ -40,19 +45,19 @@ import walkmc.serializer.serial.*
  * * World
  */
 val FrameworkModule by lazy {
-	SerializersModule {
-		contextual(StringListSerializer)
-		contextual(EnchantmentSerializer)
-		contextual(DurationSerializer)
-		contextual(ItemSerializer)
-		contextual(LocationSerializer)
-		contextual(MaterialDataSerializer)
-		contextual(PlayerSerializer)
-		contextual(OfflinePlayerSerializer)
-		contextual(UUIDSerializer)
-		contextual(IntRangeSerializer)
-		contextual(LongRangeSerializer)
-		contextual(DoubleRangeSerializer)
-		contextual(WorldSerializer)
-	}
+   SerializersModule {
+      contextual(StringListSerializer)
+      contextual(EnchantmentSerializer)
+      contextual(DurationSerializer)
+      contextual(ItemSerializer)
+      contextual(LocationSerializer)
+      contextual(MaterialDataSerializer)
+      contextual(PlayerSerializer)
+      contextual(OfflinePlayerSerializer)
+      contextual(UUIDSerializer)
+      contextual(IntRangeSerializer)
+      contextual(LongRangeSerializer)
+      contextual(DoubleRangeSerializer)
+      contextual(WorldSerializer)
+   }
 }

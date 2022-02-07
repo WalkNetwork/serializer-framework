@@ -18,12 +18,11 @@ open class BlockTag : Tag(20), Comparable<BlockTag> {
 		value = data.readBlock()
 	}
 	
+	fun copy() = value
+	
 	override fun equals(other: Any?): Boolean = other is BlockTag && value == other.value
-	
 	override fun hashCode(): Int = value.hashCode()
-	
 	override fun toString(): String = value.toString()
-	
 	override fun compareTo(other: BlockTag): Int = value.compareTo(other.value)
 	
 	companion object {

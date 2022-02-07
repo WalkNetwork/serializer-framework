@@ -24,6 +24,8 @@ open class ClassTag : Tag(18) {
 		value = data.readClass()
 	}
 	
+	fun copy() = value
+	
 	override fun toString(): String = value.qualifiedName ?: value.toString()
 	override fun equals(other: Any?): Boolean = other is ClassTag && value == other.value
 	override fun hashCode(): Int = value.hashCode()

@@ -123,7 +123,7 @@ interface StringSerialFile<T : Any> : SerialFile<T> {
 	override fun load() {
 		observe(ObserverKind.PRE_LOAD)
 		createFile()
-		reload()
+		data = format.decodeFromString(serial, file.readText())
 		observe(ObserverKind.LOAD)
 	}
 	
@@ -156,7 +156,7 @@ interface BinarySerialFile<T : Any> : SerialFile<T> {
 	override fun load() {
 		observe(ObserverKind.PRE_LOAD)
 		createFile()
-		reload()
+		data = format.decodeFromByteArray(serial, file.readBytes())
 		observe(ObserverKind.LOAD)
 	}
 	

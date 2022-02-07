@@ -15,12 +15,22 @@ open class DoubleTag(var value: Double = 0.0) : Tag(6), NumberTag, Comparable<Do
 	override fun toDouble(): Double = value
 	
 	override fun write(data: DataOutput) {
-		data.writeDouble(value)
+		try {
+			data.writeDouble(value)
+		} catch (e: Exception) {
+			data.writeDouble(0.0)
+		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readDouble()
+		value = try {
+			data.readDouble()
+		} catch (e: Exception) {
+			0.0
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: DoubleTag): Int = value.compareTo(other.value)
 	override fun equals(other: Any?): Boolean = other is DoubleTag && value == other.value

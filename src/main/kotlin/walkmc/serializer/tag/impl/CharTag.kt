@@ -13,12 +13,22 @@ open class CharTag : Tag(8), Comparable<CharTag> {
 	var value: Char by notnull()
 	
 	override fun write(data: DataOutput) {
-		data.writeChar(value.code)
+		try {
+			data.writeChar(value.code)
+		} catch (e: Exception) {
+			data.writeChar(0)
+		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readChar()
+		value = try {
+			data.readChar()
+		} catch (e: Exception) {
+			' '
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: CharTag): Int = value.compareTo(other.value)
 	override fun toString(): String = value.toString()

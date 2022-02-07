@@ -49,6 +49,9 @@ open class ListTag<T : Tag>(
 		}
 	}
 	
+	fun copy() = ArrayList(value)
+	fun copy(list: List<*>) = list + value
+
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is ListTag<*> && value == other.value
 	override fun hashCode(): Int = value.hashCode()

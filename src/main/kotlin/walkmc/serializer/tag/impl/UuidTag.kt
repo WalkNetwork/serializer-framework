@@ -25,6 +25,8 @@ open class UuidTag : Tag(13), Comparable<UuidTag> {
 		value = data.readUUID()
 	}
 	
+	fun copy() = value
+	
 	override fun compareTo(other: UuidTag): Int = value.compareTo(other.value)
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is UuidTag && value == other.value

@@ -1,19 +1,16 @@
 package walkmc.serializer.tag
 
 import kotlinx.serialization.*
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.*
 import walkmc.serializer.*
 import walkmc.serializer.common.*
 import java.io.*
 
 /**
- * The serial format used by tag files. The tag files dont have any extra configuration
- * so no need to the this object being a class.
+ * The serial format used by tag files. The tag files don't have any extra configuration
+ * so no need to the object being a class.
  */
-object TagFormat : AlterableTagFormat {
-	override var serializersModule: SerializersModule = FrameworkModule
-	
+class TagFormat(override var serializersModule: SerializersModule = FrameworkModule) : AlterableTagFormat {
 	override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T =
 		ByteArrayInputStream(bytes).decodeTag(deserializer)
 	
@@ -44,18 +41,3 @@ inline fun <reified T> TagFormat.decodeFromFile(file: File): T =
 
 inline fun <reified T> TagFormat.encodeToFile(file: File, value: T) =
 	file.encodeTag(serializer(), value)
-
-
-@Serializable
-data class Person(var name: String, var age: Int)
-
-
-fun main() {
-	val person = Person("José", 16)
-	val bytes = TagFormat.encodeToByteArray(person)
-	
-	println(bytes.contentToString())
-	
-	val deserialized = TagFormat.decodeFromByteArray<Person>(bytes)
-	println(deserialized)
-}

@@ -15,12 +15,22 @@ open class FloatTag(var value: Float = 0f) : Tag(5), NumberTag, Comparable<Float
 	override fun toDouble(): Double = value.toDouble()
 	
 	override fun write(data: DataOutput) {
-		data.writeFloat(value)
+		try {
+			data.writeFloat(value)
+		} catch (e: Exception) {
+			data.writeFloat(0f)
+		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readFloat()
+		value = try {
+			data.readFloat()
+		} catch (e: Exception) {
+			0f
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: FloatTag): Int = value.compareTo(other.value)
 	override fun equals(other: Any?): Boolean = other is FloatTag && value == other.value

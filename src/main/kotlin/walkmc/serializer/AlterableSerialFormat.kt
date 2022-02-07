@@ -31,7 +31,7 @@ import walkmc.serializer.tag.*
 import java.io.*
 
 /**
- * A alterable serial format is just a [SerialFormat]
+ * An alterable serial format is just a [SerialFormat]
  * with mutable [serializersModule] property.
  */
 interface AlterableSerialFormat : SerialFormat {
@@ -39,7 +39,7 @@ interface AlterableSerialFormat : SerialFormat {
 }
 
 /**
- * A alterable string format is just a [StringFormat]
+ * An alterable string format is just a [StringFormat]
  * with mutable [serializersModule] property.
  */
 interface AlterableStringFormat : AlterableSerialFormat, StringFormat {
@@ -47,7 +47,7 @@ interface AlterableStringFormat : AlterableSerialFormat, StringFormat {
 }
 
 /**
- * A alterable binary format is just a [BinaryFormat]
+ * An alterable binary format is just a [BinaryFormat]
  * with mutable [serializersModule] property.
  */
 interface AlterableBinaryFormat : AlterableSerialFormat, BinaryFormat {
@@ -55,13 +55,13 @@ interface AlterableBinaryFormat : AlterableSerialFormat, BinaryFormat {
 }
 
 /**
- * A alterable mark format is just a [TagFormat]
+ * An alterable mark format is just a [TagFormat]
  * with mutable [serializersModule] property.
  */
 interface AlterableTagFormat : AlterableBinaryFormat
 
 /**
- * A alterable stream format is just a [SerialFormat] with mutable
+ * An alterable stream format is just a [SerialFormat] with mutable
  * [serializersModule] property to use with input/output streams.
  */
 interface AlterableStreamFormat : AlterableSerialFormat {
@@ -72,7 +72,7 @@ interface AlterableStreamFormat : AlterableSerialFormat {
 }
 
 /**
- * A abstract implementation of [AlterableSerialFormat].
+ * An abstract implementation of [AlterableSerialFormat].
  */
 abstract class AbstractAlterableSerialFormat(
 	override var serializersModule: SerializersModule,
@@ -80,8 +80,8 @@ abstract class AbstractAlterableSerialFormat(
 ) : AlterableSerialFormat
 
 /**
- * A abstract implementation of [AlterableStringFormat].
- * Thats holds a [StringFormat] model to decode/encode strings.
+ * An abstract implementation of [AlterableStringFormat].
+ * That's holds a [StringFormat] model to decode/encode strings.
  */
 abstract class AbstractAlterableStringFormat(
 	override var serializersModule: SerializersModule,
@@ -97,8 +97,8 @@ abstract class AbstractAlterableStringFormat(
 }
 
 /**
- * A abstract implementation of [AlterableBinaryFormat].
- * Thats holds a [BinaryFormat] model to decode/encode byte arrays.
+ * AN abstract implementation of [AlterableBinaryFormat].
+ * That's holds a [BinaryFormat] model to decode/encode byte arrays.
  */
 abstract class AbstractAlterableBinaryFormat(
 	override var serializersModule: SerializersModule,

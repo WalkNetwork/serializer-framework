@@ -9,4 +9,6 @@ import java.io.*
 object EmptyTag : Tag(0) {
 	override fun write(data: DataOutput) = Unit
 	override fun read(data: DataInput) = Unit
+	
+	fun copy() = EmptyTag
 }

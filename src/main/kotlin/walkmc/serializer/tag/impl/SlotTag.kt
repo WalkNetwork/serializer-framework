@@ -23,6 +23,8 @@ open class SlotTag : Tag(17) {
 		value = data.readSlot()
 	}
 	
+	fun copy() = Slot(value.slot, value.item.clone())
+	
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is SlotTag && value == other.value
 	override fun hashCode(): Int = value.hashCode()

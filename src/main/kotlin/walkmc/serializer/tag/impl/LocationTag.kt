@@ -23,6 +23,8 @@ open class LocationTag : Tag(16), Comparable<LocationTag> {
 		value = data.readLocation()
 	}
 	
+	fun copy() = value.clone()
+	
 	override fun compareTo(other: LocationTag): Int = value.compareTo(other.value)
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is LocationTag && value == other.value

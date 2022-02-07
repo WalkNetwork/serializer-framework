@@ -52,6 +52,9 @@ open class SetTag<T : Tag>(
 		}
 	}
 	
+	fun copy() = HashSet(value)
+	fun copy(set: Set<*>) = set + value
+	
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is SetTag<*> && value == other.value
 	override fun hashCode(): Int = value.hashCode()

@@ -18,9 +18,7 @@ object TagIO {
 	fun write(tag: Tag, output: OutputStream, close: Boolean = true) = with(output.toTagStream()) {
 		writeShort(tag.id.toInt())
 		tag.write(this)
-		
-		if (close)
-			close()
+		if (close) close()
 	}
 	
 	/**
@@ -31,8 +29,7 @@ object TagIO {
 		val tag = createTagOrNull(id) ?: error("No tag type found with id $id")
 		
 		tag.read(this)
-		if (close)
-			close()
+		if (close) close()
 		
 		tag
 	}

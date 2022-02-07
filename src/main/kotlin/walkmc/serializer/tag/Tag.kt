@@ -4,10 +4,10 @@ import net.minecraft.server.*
 import java.io.*
 
 /**
- * Represents a abstract tag object. The Mark is used to stores data in a similar way of [NBTTagCompound].
+ * Represents an abstract tag object. The Mark is used to store data in a similar way of [NBTTagCompound].
  * This can be called as more extensible representation of NBT's.
  */
-abstract class Tag(val id: Short) : Serializable, Cloneable {
+abstract class Tag(val id: Short) : Serializable {
 	
 	/**
 	 * Writes this tag to the given data output.

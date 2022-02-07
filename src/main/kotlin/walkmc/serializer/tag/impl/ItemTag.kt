@@ -5,7 +5,6 @@ package walkmc.serializer.tag.impl
 import net.minecraft.server.*
 import org.bukkit.craftbukkit.inventory.*
 import org.bukkit.inventory.ItemStack
-import walkmc.extensions.*
 import walkmc.serializer.tag.*
 import java.io.*
 
@@ -24,6 +23,8 @@ open class ItemTag : Tag(15) {
 	override fun read(data: DataInput) {
 		value = data.readCompound().createItem()
 	}
+	
+	fun copy() = value.clone()
 	
 	override fun toString(): String = value.toString()
 	override fun equals(other: Any?): Boolean = other is ItemTag && value == other.value

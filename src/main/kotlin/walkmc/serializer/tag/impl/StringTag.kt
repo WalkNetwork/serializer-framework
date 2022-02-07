@@ -10,14 +10,22 @@ import java.io.*
  */
 open class StringTag(var value: String = "") : Tag(9), Comparable<StringTag>, Iterable<Char> {
 	override fun write(data: DataOutput) {
-		if (value.isNotEmpty()) {
+		try {
 			data.writeUTF(value)
+		} catch (ex: Exception) {
+			data.writeUTF("")
 		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readUTF()
+		value = try {
+			data.readUTF()
+		} catch (ex: Exception) {
+			""
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: StringTag): Int = value.compareTo(other.value)
 	override fun toString(): String = value

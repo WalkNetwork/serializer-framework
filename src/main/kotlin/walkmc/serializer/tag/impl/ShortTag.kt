@@ -15,12 +15,22 @@ open class ShortTag(var value: Short = 0) : Tag(2), NumberTag, Comparable<ShortT
 	override fun toDouble(): Double = value.toDouble()
 	
 	override fun write(data: DataOutput) {
-		data.writeShort(toInt())
+		try {
+			data.writeShort(toInt())
+		} catch (e: Exception) {
+			data.writeShort(0)
+		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readShort()
+		value = try {
+			data.readShort()
+		} catch (e: Exception) {
+			0
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: ShortTag): Int = value.compareTo(other.value)
 	override fun equals(other: Any?): Boolean = other is ShortTag && value == other.value

@@ -10,12 +10,22 @@ import java.io.*
  */
 open class BooleanTag(var value: Boolean = false) : Tag(7), Comparable<BooleanTag> {
 	override fun write(data: DataOutput) {
-		data.writeBoolean(value)
+		try {
+			data.writeBoolean(value)
+		} catch (e: Exception) {
+			data.writeBoolean(false)
+		}
 	}
 	
 	override fun read(data: DataInput) {
-		value = data.readBoolean()
+		value = try {
+			data.readBoolean()
+		} catch (e: Exception) {
+			false
+		}
 	}
+	
+	fun copy() = value
 	
 	override fun compareTo(other: BooleanTag): Int = value.compareTo(other.value)
 	override fun toString(): String = value.toString()

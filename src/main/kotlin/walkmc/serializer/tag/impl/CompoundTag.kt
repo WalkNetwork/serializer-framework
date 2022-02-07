@@ -19,7 +19,7 @@ import java.util.*
  * A tag implementation to stores [MutableMap].
  */
 open class CompoundTag(
-	val delegate: MutableMap<String, Tag> = HashMap()
+	val delegate: MutableMap<String, Tag> = LinkedHashMap()
 ) : Tag(12), MutableMap<String, Tag> by delegate {
 	
 	/**
@@ -59,6 +59,52 @@ open class CompoundTag(
 		this.delegate[key] = value
 		return value
 	}
+	
+	fun copy() = LinkedHashMap(delegate)
+	
+	fun <T : Tag> by(key: String): T = get(key)!!.cast()
+	fun <T : Tag> byOrNull(key: String): T? = get(key)?.cast()
+	fun byteOrNull(key: String) = getByOrNull<ByteTag>(key)?.value
+	fun byte(key: String, default: Byte = 0) = getByteOrNull(key) ?: default
+	fun shortOrNull(key: String) = getByOrNull<ShortTag>(key)?.value
+	fun short(key: String, default: Short = 0) = getShortOrNull(key) ?: default
+	fun intOrNull(key: String) = getByOrNull<IntTag>(key)?.value
+	fun int(key: String, default: Int = 0) = getIntOrNull(key) ?: default
+	fun longOrNull(key: String) = getByOrNull<LongTag>(key)?.value
+	fun long(key: String, default: Long = 0) = getLongOrNull(key) ?: default
+	fun floatOrNull(key: String) = getByOrNull<FloatTag>(key)?.value
+	fun float(key: String, default: Float = 0f) = getFloatOrNull(key) ?: default
+	fun doubleOrNull(key: String) = getByOrNull<DoubleTag>(key)?.value
+	fun double(key: String, default: Double = 0.0) = getDoubleOrNull(key) ?: default
+	fun booleanOrNull(key: String) = getByOrNull<BooleanTag>(key)?.value
+	fun boolean(key: String, default: Boolean = false) = getBooleanOrNull(key) ?: default
+	fun charOrNull(key: String) = getByOrNull<CharTag>(key)?.value
+	fun char(key: String, default: Char = ' ') = getCharOrNull(key) ?: default
+	fun stringOrNull(key: String) = getByOrNull<StringTag>(key)?.value
+	fun string(key: String, default: String = "") = getStringOrNull(key) ?: default
+	fun <T : Tag> listOrNull(key: String) = getByOrNull<ListTag<T>>(key)?.value
+	fun <T : Tag> list(key: String) = getListOrNull<T>(key) ?: ArrayList()
+	fun <T : Tag> setOrNull(key: String) = getByOrNull<SetTag<T>>(key)?.value
+	fun <T : Tag> set(key: String) = getSetOrNull<T>(key) ?: HashSet()
+	fun compoundOrNull(key: String) = getByOrNull<CompoundTag>(key)
+	fun compound(key: String, default: CompoundTag = CompoundTag()) = getCompoundOrNull(key) ?: default
+	fun uuidOrNull(key: String) = getByOrNull<UuidTag>(key)?.value
+	fun uuid(key: String, default: UUID? = null) = getUuidOrNull(key) ?: default ?: error("No uuid tag value found with key $key")
+	fun nbtCompoundOrNull(key: String) = getByOrNull<NbtCompoundTag>(key)?.value
+	fun nbtCompound(key: String, default: NBTTagCompound = NBTTagCompound()) = getNbtCompoundOrNull(key) ?: default
+	fun itemOrNull(key: String) = getByOrNull<ItemTag>(key)?.value
+	fun item(key: String, default: ItemStack? = null) = getItemOrNull(key) ?: default ?: error("No item tag value found with key $key")
+	fun classOrNull(key: String) = getByOrNull<ClassTag>(key)?.value
+	fun slotOrNull(key: String) = getByOrNull<SlotTag>(key)?.value
+	fun slot(key: String, default: Slot? = null) = getSlotOrNull(key) ?: default ?: error("No class tag value found with key $key")
+	inline fun <reified T : Enum<T>> enumOrNull(key: String) = runCatching { enumValueOf<T>(getString(key)) }.getOrNull()
+	inline fun <reified T : Enum<T>> enum(key: String, default: T? = null) = getEnumOrNull(key) ?: default ?: error("No class tag value found with key $key")
+	fun inventoryOrNull(key: String) = getByOrNull<InventoryTag>(key)?.value
+	fun inventory(key: String, default: Inventory? = null) = getInventoryOrNull(key) ?: default ?: error("No class tag value found with key $key")
+	fun blockOrNull(key: String) = getByOrNull<BlockTag>(key)?.value
+	fun block(key: String, default: Block? = null) = getBlockOrNull(key) ?: default ?: error("No block tag value found with key $key")
+	fun locationOrNull(key: String) = getByOrNull<LocationTag>(key)?.value
+	fun location(key: String, default: Location? = null) = getLocationOrNull(key) ?: default ?: error("No location tag value found with key $key")
 	
 	override fun equals(other: Any?) = other is CompoundTag && delegate == other.delegate
 	override fun toString() = delegate.toString()
@@ -451,7 +497,7 @@ inline fun CompoundTag.put(key: String, value: Inventory) = put(key, value.toTag
  * a possible existent value if the [value] is false.
  */
 fun CompoundTag.setBooleanOrRemove(key: String, value: Boolean) {
-	if (!value) remove(key) else put(key, value.toTag())
+	if (!value) remove(key) else put(key, true)
 }
 
 inline operator fun CompoundTag.set(key: String, value: Enum<*>) {
