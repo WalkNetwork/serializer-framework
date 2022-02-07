@@ -1,16 +1,15 @@
 plugins {
-	kotlin("jvm") version "1.6.0"
-	kotlin("plugin.serialization") version "1.6.0"
+	kotlin("jvm") version "1.6.10"
+	kotlin("plugin.serialization") version "1.6.10"
 	id("java")
-	id("com.github.johnrengelman.shadow") version "6.0.0"
+	id("com.github.johnrengelman.shadow") version "7.0.0"
 	id("maven-publish")
 	id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 	id("signing")
-	id("org.jetbrains.dokka") version "1.5.0"
 }
 
 group = "io.github.uinnn"
-version = "2.4.10"
+version = "2.5.0"
 
 repositories {
 	mavenCentral()
@@ -18,14 +17,14 @@ repositories {
 }
 
 dependencies {
-	api("io.github.uinnn:walk-server:2.3.10")
+	api("io.github.uinnn:walk-server:2.4.0")
 	api(kotlin("stdlib-jdk8"))
-	api("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
-	api("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.1")
-	api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-	api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.1")
-	api("com.charleskorn.kaml:kaml:0.36.0")
-	api("net.benwoodworth.knbt:knbt:0.10.1")
+	api("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+	api("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
+	api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+	api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.2")
+	api("com.charleskorn.kaml:kaml:0.40.0")
+	api("net.benwoodworth.knbt:knbt:0.11.1")
 }
 
 nexusPublishing {
