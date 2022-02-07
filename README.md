@@ -34,30 +34,45 @@ data class Family(members: MutableList<Person> = ArrayList())
 
 ```kt
 object FamilyConfig : YamlFile<Family>(file = file, model = Family())
+
+// non-extending way:
+val familyConfig = yml(file, Family())
 ```
 
 ### JSON
 
 ```kt
 object FamilyConfig : JsonFile<Family>(file = file, model = Family())
+
+// non-extending way:
+val familyConfig = json(file, Family())
 ```
 
 ### Protocol buffers
 
 ```kt
 object FamilyConfig : ProtobufFile<Family>(file = file, model = Family())
+
+// non-extending way:
+val familyConfig = protobuf(file, Family())
 ```
 
 ### NBT
 
 ```kt
 object FamilyConfig : NBTFile<Family>(file = file, model = Family())
+
+// non-extending way:
+val familyConfig = nbt(file, Family())
 ```
 
 ### Own custom implementation of NBT
 
 ```kt
 object FamilyConfig : TagFile<Family>(file = file, model = Family())
+
+// non-extending way:
+val familyConfig = tag(file, Family())
 ```
 
 ### Examples:
